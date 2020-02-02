@@ -6,6 +6,7 @@ from . import views as core_views
 urlpatterns = [
 
     path('', views.index, name='index'),
+    path('search/', views.search, name='search'),
     path('profile/', views.profile, name='profile'),
     path('profile/edit', views.editprofile, name='editprofile'),
     path('signup/', views.signup, name='signup'),

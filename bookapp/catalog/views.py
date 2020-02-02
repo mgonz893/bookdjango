@@ -50,6 +50,10 @@ def index(request):
     return render(request, 'index.html', context=context)
 
 
+def search(request):
+    return render(request, 'search.html')
+
+
 class BookListView(generic.ListView):
     model = Book
     paginate_by = 10
@@ -57,6 +61,11 @@ class BookListView(generic.ListView):
 
 class BookDetailView(generic.DetailView):
     model = Book
+
+
+def login(request):
+    args = {'user': request.user}
+    return render(request, 'index.html', args)
 
 
 def signup(request):
