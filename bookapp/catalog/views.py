@@ -11,7 +11,9 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
 from .models import Book
 from django.contrib.auth.forms import UserCreationForm
-
+from catalog.forms import RegistrationForm
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserChangeForm
 
 # Create your views here.
 from catalog.models import Book, Author, BookInstance, Genre
@@ -58,12 +60,30 @@ class BookDetailView(generic.DetailView):
 
 def signup(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = RegistrationForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('/catalog')
     else:
-        form = UserCreationForm()
+        form = RegistrationForm()
 
     args = {'form': form}
     return render(request, 'signup.html', args)
+
+
+def profile(request):
+    args = {'user': request.user}
+    return render(request, 'profile.html', args)
+
+
+def editprofile(request):
+    if request.method == 'POST':
+        form = UserChangeForm(request.POST, instance=request.user)
+
+        if form.is_valid():
+            form.save()
+            return redirect('/catalog/profile/')
+    else:
+        form = UserChangeForm(instance=request.user)
+    args = {'form': form}
+    return render(request, 'editprofile.html', args)
