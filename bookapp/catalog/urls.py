@@ -7,6 +7,7 @@ urlpatterns = [
 
     path('', views.index, name='index'),
     path('search/', views.search, name='search'),
+    path('searchresults/', views.SearchResultsView.as_view(), name='search_results'),
     path('profile/', views.profile, name='profile'),
     path('profile/edit', views.editprofile, name='editprofile'),
     path('signup/', views.signup, name='signup'),

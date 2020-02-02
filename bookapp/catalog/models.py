@@ -81,7 +81,10 @@ class Book(models.Model):
         Genre, help_text='Select a genre for this book')
 
     # requires to install Pillow to work: python -m pip install Pillow
-    model_pic = models.ImageField(upload_to='pics/', blank=True)
+    model_pic = models.ImageField(upload_to='pics/', blank=True, null=True)
+
+    class Meta:
+        verbose_name_plural = "books"
 
     def __str__(self):
         """String for representing the Model object."""

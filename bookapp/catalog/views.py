@@ -2,6 +2,8 @@ from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 import datetime
+from django.db.models import Q
+from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
@@ -17,7 +19,7 @@ from django.contrib.auth.forms import UserChangeForm
 
 
 # Create your views here.
-from catalog.models import Book, Author, BookInstance, Genre
+from catalog.models import Book, Author, BookInstance, Genre, UserProfile
 
 
 def index(request):
@@ -52,6 +54,18 @@ def index(request):
 
 def search(request):
     return render(request, 'search.html')
+
+
+class SearchResultsView(generic.ListView):
+    model = Book
+    paginate_by = 10
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        object_list = Book.objects.filter(
+            Q(title__icontains=query) | Q(genre__name__icontains=query)
+        )
+        return object_list
 
 
 class BookListView(generic.ListView):
