@@ -126,9 +126,9 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static"), ]
 
 STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_cdn")
 
-MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "src/media")
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "pics/")
 
-MEDIA_URL = "/pics/"
+MEDIA_URL = "/media/"
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = '/'

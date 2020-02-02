@@ -8,5 +8,5 @@
   <p><strong>ISBN:</strong> {{ book.isbn }}</p> 
   <p><strong>Language:</strong> {{ book.language }}</p>  
   <p><strong>Genre:</strong> {{ book.genre.all|join:", " }}</p>  
-  <p><img src={{book.model_pic}}></img></p>
+  <p><strong>Cover:</strong><img src="{{book.model_pic.url}}" width="240"></img></p>
 {% endblock %}
