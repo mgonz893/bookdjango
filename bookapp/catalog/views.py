@@ -11,9 +11,10 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
 from .models import Book
 from django.contrib.auth.forms import UserCreationForm
-from catalog.forms import RegistrationForm
+from catalog.forms import RegistrationForm, EditProfileForm
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserChangeForm
+
 
 # Create your views here.
 from catalog.models import Book, Author, BookInstance, Genre
@@ -78,12 +79,12 @@ def profile(request):
 
 def editprofile(request):
     if request.method == 'POST':
-        form = UserChangeForm(request.POST, instance=request.user)
+        form = EditProfileForm(request.POST, instance=request.user)
 
         if form.is_valid():
             form.save()
             return redirect('/catalog/profile/')
     else:
-        form = UserChangeForm(instance=request.user)
+        form = EditProfileForm(instance=request.user)
     args = {'form': form}
     return render(request, 'editprofile.html', args)
