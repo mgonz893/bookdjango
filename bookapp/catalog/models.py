@@ -5,28 +5,36 @@ from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import User
 from datetime import date
+from django.db.models.signals import post_save
 # Create your models here.
 
 
-class User(models.Model):
-    nickname = models.CharField(
-        max_length=8, help_text='Enter a nickname (max 8 characters)')
-    name = models.CharField(max_length=200)
-    password = models.CharField(max_length=8)
-    email = models.EmailField(max_length=50)
-    address = models.CharField(max_length=200)
-    city = models.CharField(max_length=25)
-    state = models.CharField(max_length=25)
-    zipcode = models.IntegerField()
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200, default='')
+    password = models.CharField(max_length=8, default='')
+    email = models.EmailField(max_length=50, default='')
+    address = models.CharField(max_length=200, default='')
+    city = models.CharField(max_length=25, default='')
+    state = models.CharField(max_length=25, default='')
+    zipcode = models.IntegerField(default=0)
 
     def __str__(self):
         """String for representing the Model object."""
-        return self.nickname
+        return self.user.username
+
+
+def create_profile(sender, **kwargs):
+    if kwargs['created']:
+        user_profile = UserProfile.objects.create(user=kwargs['instance'])
+
+
+post_save.connect(create_profile, sender=User)
 
 
 class CreditCard(models.Model):
-    nickname = models.ForeignKey(
-        'User', on_delete=models.SET_NULL, null=True)
+    username = models.ForeignKey(
+        'UserProfile', on_delete=models.SET_NULL, null=True)
     ccnumber = models.IntegerField()
 
     def __str__(self):
@@ -34,8 +42,8 @@ class CreditCard(models.Model):
 
 
 class ShippingAddr(models.Model):
-    nickname = models.ForeignKey(
-        'User', on_delete=models.SET_NULL, null=True)
+    username = models.ForeignKey(
+        'UserProfile', on_delete=models.SET_NULL, null=True)
     address = models.CharField(max_length=200)
     city = models.CharField(max_length=25)
     state = models.CharField(max_length=25)
@@ -67,7 +75,7 @@ class Book(models.Model):
     isbn = models.CharField(
         'ISBN', max_length=13, help_text='13 Character <a href="https://www.isbn-international.org/content/what-isbn">ISBN number</a>')
 
-    ratings = models.ManyToManyField(User, through='BookRating')
+    ratings = models.ManyToManyField(UserProfile, through='BookRating')
 
     # ManyToManyField used because genre can contain many books. Books can cover many genres.
     # Genre class has already been defined so we can specify the object above.
@@ -88,7 +96,7 @@ class Book(models.Model):
 
 class BookRating(models.Model):
     book = models.ForeignKey('Book', on_delete=models.SET_NULL, null=True)
-    user = models.ForeignKey('User', on_delete=models.CASCADE)
+    user = models.ForeignKey('UserProfile', on_delete=models.CASCADE)
     review = models.TextField(max_length=1000)
     rating = models.SmallIntegerField(choices=[(i, i) for i in range(1, 6)])
 
@@ -104,7 +112,7 @@ class BookInstance(models.Model):
     imprint = models.CharField(max_length=200)
     due_back = models.DateField(null=True, blank=True)
     borrower = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True, blank=True)
+        UserProfile, on_delete=models.SET_NULL, null=True, blank=True)
 
     @property
     def is_overdue(self):
