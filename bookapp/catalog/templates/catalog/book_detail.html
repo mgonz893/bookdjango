@@ -2,11 +2,13 @@
 
 {% block content %}
   <h1>Title: {{ book.title }}</h1>
-
-  <p><strong>Author:</strong> <a href="">{{ book.author }}</a></p> <!-- author detail link not yet defined -->
-  <p><strong>Summary:</strong> {{ book.summary }}</p>
-  <p><strong>ISBN:</strong> {{ book.isbn }}</p> 
-  <p><strong>Language:</strong> {{ book.language }}</p>  
-  <p><strong>Genre:</strong> {{ book.genre.all|join:", " }}</p>  
-  <p><strong>Cover:</strong><img src="{{book.model_pic.url}}" width="240"></img></p>
+  <p><strong>Average Rating: </strong></p>
+  <p><strong>Description: </strong> {{ book.summary }}</p>
+  <p><strong>Publishing Info: </strong>{{ book.publisher }}</p> 
+  <p><strong>Genre: </strong> {{ book.genre.all|join:", " }}</p> 
+  <p><strong>Author: </strong> <a href="">{{ book.author }}</a></p> <!-- author detail link not yet defined -->
+  <p><strong>Author Biography: </strong>{{ book.author.biography }}</p> 
+  <p><strong>Cover: </strong><a href="{{book.model_pic.url}}">
+  <img src="{{book.model_pic.url}}" width="240"></img></a></p>
+  <p><strong>Submitted Comments & Rating: </strong></p>
 {% endblock %}

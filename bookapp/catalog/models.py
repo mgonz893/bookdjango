@@ -72,8 +72,6 @@ class Book(models.Model):
 
     summary = models.TextField(
         max_length=1000, help_text='Enter a brief description of the book')
-    isbn = models.CharField(
-        'ISBN', max_length=13, help_text='13 Character <a href="https://www.isbn-international.org/content/what-isbn">ISBN number</a>')
 
     ratings = models.ManyToManyField(UserProfile, through='BookRating')
 
@@ -146,8 +144,9 @@ class BookInstance(models.Model):
 
 class Author(models.Model):
     """Model representing an author."""
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
+    first_name = models.CharField(max_length=100, default='')
+    last_name = models.CharField(max_length=100, default='')
+    biography = models.CharField(max_length=500, default='')
 
     class Meta:
         ordering = ['last_name', 'first_name']
