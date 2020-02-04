@@ -65,6 +65,11 @@ class SearchResultsView(generic.ListView):
         )
         return object_list
 
+class ShoppingCart(generic.ListView):
+    model = Book
+    paginate_by = 10
+    odering = ['title', 'author', 'price']
+
 
 class BookListView(generic.ListView):
     model = Book
