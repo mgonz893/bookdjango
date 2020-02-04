@@ -3,10 +3,9 @@
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 {% block content %}
 <h2>Search a genre!</h2>
-
 <p></p>
-
 <form action="{% url 'search_results' %}" method="get">
   <input name="q" type="text" placeholder="Search..."  style="width: 300px;">
 </form>
+<p>Press 'enter' key to search!</p>
 {% endblock %}

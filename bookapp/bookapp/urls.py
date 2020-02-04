@@ -24,6 +24,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 ]
 
+urlpatterns += [
+    path('search/', include('catalog.urls')),
+]
 
 # Use include() to add paths from the catalog application
 

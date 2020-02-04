@@ -2,14 +2,14 @@
 
 {% block content %}
   <h2>Profile</h2>
-<p>Username: {{user}}</p>
-<p>First name: {{user.first_name}}</p>
-<p>Last name: {{user.last_name}}</p>
-<p>Email: {{user.email}}</p>
-<p>Address: {{user.userprofile.address}}</p>
-<p>City: {{user.userprofile.city}}</p>
-<p>State: {{user.userprofile.state}}</p>
-<p>Zip: {{user.userprofile.zipcode}}</p>
+<p><strong>Username:</strong> {{user}}</p>
+<p><strong>First name:</strong> {{user.first_name}}</p>
+<p><strong>Last name:</strong> {{user.last_name}}</p>
+<p><strong>Email:</strong> {{user.email}}</p>
+<p><strong>Address:</strong> {{user.userprofile.address}}</p>
+<p><strong>City:</strong> {{user.userprofile.city}}</p>
+<p><strong>State:</strong> {{user.userprofile.state}}</p>
+<p><strong>Zip:</strong> {{user.userprofile.zipcode}}</p>
 <p></p>
 <button type="submit">Edit Profile</button>
 {% endblock %}

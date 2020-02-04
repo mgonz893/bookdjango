@@ -1,8 +1,8 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h2>Book List</h2>
-  {% if book_list %}
+{% if book_list %}
+<h2>Books by: {{ book.author }}</h2>
   <ul>
     {% for book in book_list %}
       <li>
@@ -12,7 +12,6 @@
     {% endfor %}
   </ul>
   {% else %}
-    <p><strong>There are no books with that genre in this catalog.</strong></p>
-  {% endif %}     
-  
+    <p><strong>There are no book from this author in this catalog.</strong></p>
+  {% endif %}  
 {% endblock %}
