@@ -75,6 +75,8 @@ class Book(models.Model):
 
     ratings = models.ManyToManyField(UserProfile, through='BookRating')
 
+    price = models.FloatField(default="9.99")
+
     # ManyToManyField used because genre can contain many books. Books can cover many genres.
     # Genre class has already been defined so we can specify the object above.
     genre = models.ManyToManyField(

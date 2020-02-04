@@ -69,6 +69,7 @@ class SearchResultsView(generic.ListView):
 class BookListView(generic.ListView):
     model = Book
     paginate_by = 10
+    ordering = ['title', 'author', 'price']
 
 
 class BookDetailView(generic.DetailView):
