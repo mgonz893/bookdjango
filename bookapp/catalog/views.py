@@ -14,6 +14,7 @@ from .models import Book
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from catalog.forms import RegistrationForm, EditProfileForm
 from django.contrib.auth.models import User
+import random
 
 
 # Create your views here.
@@ -54,6 +55,17 @@ def search(request):
     return render(request, 'search.html')
 
 
+def topsellers(request):
+    num_books = Book.objects.all()
+    list_books = random.sample(list(num_books), 3)
+
+    context = {
+        'book_list': list_books,
+    }
+
+    return render(request, 'top_sellers.html', context)
+
+
 class SearchResultsView(generic.ListView):
     model = Book
     paginate_by = 10
@@ -65,10 +77,16 @@ class SearchResultsView(generic.ListView):
         )
         return object_list
 
+
 class ShoppingCart(generic.ListView):
     model = Book
+<<<<<<< HEAD
     paginate_by = 10
     ordering = ['title', 'author', 'price']
+=======
+    # paginate_by = 10
+    # ordering = ['title', 'author', 'price']
+>>>>>>> ba70ecffb88d0944d746d24bbebd62e3bb2337a6
 
 
 class BookListView(generic.ListView):
