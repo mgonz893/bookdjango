@@ -16,7 +16,8 @@
       {% block sidebar %}
         <ul class="sidebar-nav">
           <li><a href="{% url 'index' %}">Home</a></li>
-          <li><a href="{% url 'search' %}">Search</a></li>
+          <li><a href="{% url 'search' %}">Search By Genre</a></li>
+          <li><a href="{% url 'topsellers' %}">Top Sellers</a></li>
           <li><a href="{% url 'books' %}">All Books</a></li>
           <li><a href="{% url 'shoppingcart' %}">Shopping Cart</a></li>
              {% if user.is_authenticated %}
