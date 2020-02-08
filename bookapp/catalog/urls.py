@@ -15,6 +15,6 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('books/', views.BookListView.as_view(), name='books'),
     path('book/<int:pk>', views.BookDetailView.as_view(), name='book-detail'),
-    path('shoppingcart/', views.ShoppingCart.as_view(), name='shoppingcart'),
+    path('shoppingcart/', views.shop_cart, name='shoppingcart'),
 
 ]

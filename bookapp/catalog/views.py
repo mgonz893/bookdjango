@@ -67,8 +67,8 @@ class SearchResultsView(generic.ListView):
 
 class ShoppingCart(generic.ListView):
     model = Book
-    #paginate_by = 10
-    #ordering = ['title', 'author', 'price']
+    paginate_by = 10
+    ordering = ['title', 'author', 'price']
 
 
 class BookListView(generic.ListView):
@@ -79,6 +79,10 @@ class BookListView(generic.ListView):
 
 class BookDetailView(generic.DetailView):
     model = Book
+
+def shop_cart(request):
+    args = {'user': request.user}
+    return render(request, 'shopping_cart.html', args)
 
 
 def login(request):
