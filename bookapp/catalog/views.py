@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import permission_required
 from django.views import generic
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
-from .models import Book
+from .models import Book, Wishlist
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from catalog.forms import RegistrationForm, EditProfileForm
 from django.contrib.auth.models import User
@@ -79,6 +79,17 @@ class SearchResultsView(generic.ListView):
             Q(title__icontains=query) | Q(genre__name__icontains=query)
         )
         return object_list
+
+
+class WishlistsView(generic.ListView):
+    model = Wishlist
+    template_name = 'catalog/wishlists.html'
+    context_object_name = 'wishlists_list'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['wishlists'] = Wishlist.objects.filter(user=self.request.user)
+        return context
 
 
 class ShoppingCart(generic.ListView):
