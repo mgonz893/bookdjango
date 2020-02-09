@@ -39,16 +39,19 @@ def index(request):
     return render(request, 'index.html', context=context)
 
 
-class author(generic.ListView):
+def author(request):
     model = Book
     paginate_by = 10
 
-    def get_queryset(self):
-        query = self.request.GET.get('q')
-        object_list = Book.objects.filter(
-            Q(author__fullname__icontains=query)
-        )
-        return object_list
+    query = request.GET.get('q')
+    object_list = Book.objects.filter(
+        Q(author__fullname__icontains=query)
+    )
+    context = {
+        'book_list': object_list,
+        'author': object_list[0],
+    }
+    return render(request, 'author.html', context)
 
 
 def search(request):
