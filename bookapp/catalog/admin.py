@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import UserProfile, Book, Author, BookRating, CreditCard, ShippingAddr, Genre
+from .models import UserProfile, Book, Author, BookRating, CreditCard, ShippingAddr, Genre, Wishlist
 
 # Register your models here.
 admin.site.register(UserProfile)
@@ -9,3 +9,4 @@ admin.site.register(Genre)
 admin.site.register(CreditCard)
 admin.site.register(ShippingAddr)
 admin.site.register(BookRating)
+admin.site.register(Wishlist)

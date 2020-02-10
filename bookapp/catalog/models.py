@@ -124,3 +124,14 @@ class Author(models.Model):
     def __str__(self):
         """String for representing the Model object."""
         return f'{self.first_name} {self.last_name}'
+
+
+class Wishlist(models.Model):
+    # Model representing a wishlist
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    books = models.ManyToManyField(Book)
+    name = models.CharField(max_length=100, default='New Wishlist')
+
+    def __str__(self):
+        return self.name

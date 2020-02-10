@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import permission_required
 from django.views import generic
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
-from .models import Book
+from .models import Book, Wishlist
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from catalog.forms import RegistrationForm, EditProfileForm
 from django.contrib.auth.models import User
@@ -39,16 +39,19 @@ def index(request):
     return render(request, 'index.html', context=context)
 
 
-class author(generic.ListView):
+def author(request):
     model = Book
     paginate_by = 10
 
-    def get_queryset(self):
-        query = self.request.GET.get('q')
-        object_list = Book.objects.filter(
-            Q(author__fullname__icontains=query)
-        )
-        return object_list
+    query = request.GET.get('q')
+    object_list = Book.objects.filter(
+        Q(author__fullname__icontains=query)
+    )
+    context = {
+        'book_list': object_list,
+        'author': object_list[0],
+    }
+    return render(request, 'author.html', context)
 
 
 def search(request):
@@ -78,12 +81,27 @@ class SearchResultsView(generic.ListView):
         return object_list
 
 
+class WishlistsView(generic.ListView):
+    model = Wishlist
+    template_name = 'catalog/wishlists.html'
+    context_object_name = 'wishlists_list'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        if self.request.user.is_authenticated:
+            context['wishlists'] = Wishlist.objects.filter(user=self.request.user)
+        return context
+
+
 class ShoppingCart(generic.ListView):
     model = Book
     paginate_by = 10
     ordering = ['title', 'author', 'price']
+<<<<<<< HEAD
     # paginate_by = 10
     # ordering = ['title', 'author', 'price']
+=======
+>>>>>>> afa1f04da6428ccf4c13034d381349474e6bcb47
 
 
 class BookListView(generic.ListView):
@@ -94,6 +112,7 @@ class BookListView(generic.ListView):
 
 class BookDetailView(generic.DetailView):
     model = Book
+
 
 def shop_cart(request):
     args = {'user': request.user}

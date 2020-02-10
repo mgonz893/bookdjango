@@ -1,0 +1,14 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    <h1>Your Wishlists</h1>
+    {% for wishlist in wishlists %}
+    <h3>{{ wishlist.name }}</h3>
+    <p>Books</p>
+    {% endfor %}
+{% else %}
+    <h1>Oops!</h1>
+    <p>You are not <a href="{% url 'login' %}">logged in</a>.</p>
+{% endif %}
+{% endblock %}

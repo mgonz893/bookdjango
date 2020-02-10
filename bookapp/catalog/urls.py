@@ -6,7 +6,7 @@ from . import views as core_views
 urlpatterns = [
 
     path('', views.index, name='index'),
-    path('author/', views.author.as_view(), name='author'),
+    path('author/', views.author, name='author'),
     path('topsellers/', views.topsellers, name='topsellers'),
     path('search/', views.search, name='search'),
     path('search/searchresults/',
@@ -17,5 +17,6 @@ urlpatterns = [
     path('books/', views.BookListView.as_view(), name='books'),
     path('book/<int:pk>', views.BookDetailView.as_view(), name='book-detail'),
     path('shoppingcart/', views.shop_cart, name='shoppingcart'),
+    path('wishlists/', views.WishlistsView.as_view(), name='wishlists'),
 
 ]
