@@ -80,13 +80,10 @@ class SearchResultsView(generic.ListView):
 
 class ShoppingCart(generic.ListView):
     model = Book
-<<<<<<< HEAD
     paginate_by = 10
     ordering = ['title', 'author', 'price']
-=======
     # paginate_by = 10
     # ordering = ['title', 'author', 'price']
->>>>>>> ba70ecffb88d0944d746d24bbebd62e3bb2337a6
 
 
 class BookListView(generic.ListView):
