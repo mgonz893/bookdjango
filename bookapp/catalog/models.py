@@ -135,3 +135,24 @@ class Wishlist(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Shopping_Cart(models.Model):
+    #Shopping Cart Model
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    books = models.ManyToManyField(Book)
+    title = models.CharField(max_length=200)
+    quantity = models.IntegerField(default="1")
+    author = models.ForeignKey('Author', on_delete=models.SET_NULL, null=True)
+    publisher = models.CharField(max_length=50, default='Publisher')
+    summary = models.TextField(max_length=1000, help_text='Enter a brief description of the book')
+    #ratings = models.ManyToManyField(UserProfile, through='BookRating')
+    price = models.FloatField(default="9.99")
+    subtotal = models.FloatField(default=price)
+    genre = models.ManyToManyField(Genre, help_text='Select a genre for this book')
+    model_pic = models.ImageField(upload_to='pics/', blank=True, null=True)
+    name = models.CharField(max_length=100, default='Shopping Cart')
+
+    def __str__(self):
+        return self.name

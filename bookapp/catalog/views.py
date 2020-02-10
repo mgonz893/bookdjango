@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import permission_required
 from django.views import generic
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
-from .models import Book, Wishlist
+from .models import Book, Wishlist, Shopping_Cart
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from catalog.forms import RegistrationForm, EditProfileForm
 from django.contrib.auth.models import User
@@ -94,14 +94,11 @@ class WishlistsView(generic.ListView):
 
 
 class ShoppingCart(generic.ListView):
-    model = Book
+    model = Shopping_Cart
     paginate_by = 10
     ordering = ['title', 'author', 'price']
-<<<<<<< HEAD
     # paginate_by = 10
     # ordering = ['title', 'author', 'price']
-=======
->>>>>>> afa1f04da6428ccf4c13034d381349474e6bcb47
 
 
 class BookListView(generic.ListView):
