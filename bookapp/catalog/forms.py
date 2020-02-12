@@ -41,6 +41,7 @@ class EditProfileForm(UserChangeForm):
         exclude = {
             'password',
         }
+        field_order = ['email', 'first_name', 'last_name']
 
 
 class ProfileForm(forms.ModelForm):
@@ -55,3 +56,5 @@ class ProfileForm(forms.ModelForm):
         exclude = {
             'password',
         }
+
+        field_order = ['address', 'city', 'state', 'zipcode']
