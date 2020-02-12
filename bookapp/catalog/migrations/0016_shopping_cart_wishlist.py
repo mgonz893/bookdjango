@@ -16,28 +16,37 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Wishlist',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(default='New Wishlist', max_length=100)),
                 ('books', models.ManyToManyField(to='catalog.Book')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(
             name='Shopping_Cart',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                                        primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=200)),
                 ('quantity', models.IntegerField(default='1')),
                 ('publisher', models.CharField(default='Publisher', max_length=50)),
-                ('summary', models.TextField(help_text='Enter a brief description of the book', max_length=1000)),
+                ('summary', models.TextField(
+                    help_text='Enter a brief description of the book', max_length=1000)),
                 ('price', models.FloatField(default='9.99')),
-                ('subtotal', models.FloatField(default=models.FloatField(default='9.99'))),
-                ('model_pic', models.ImageField(blank=True, null=True, upload_to='pics/')),
+                ('subtotal', models.FloatField(
+                    default=models.FloatField(default='9.99'))),
+                ('model_pic', models.ImageField(
+                    blank=True, null=True, upload_to='pics/')),
                 ('name', models.CharField(default='Shopping Cart', max_length=100)),
-                ('author', models.ForeignKey(null=True, on_delete=django.db.models.deletion.SET_NULL, to='catalog.Author')),
+                ('author', models.ForeignKey(
+                    null=True, on_delete=django.db.models.deletion.SET_NULL, to='catalog.Author')),
                 ('books', models.ManyToManyField(to='catalog.Book')),
-                ('genre', models.ManyToManyField(help_text='Select a genre for this book', to='catalog.Genre')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('genre', models.ManyToManyField(
+                    help_text='Select a genre for this book', to='catalog.Genre')),
+                ('user', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]
