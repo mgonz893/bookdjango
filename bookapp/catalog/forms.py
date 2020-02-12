@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import UserChangeForm
+from .models import UserProfile
 
 
 class RegistrationForm(UserCreationForm):
@@ -36,5 +37,21 @@ class EditProfileForm(UserChangeForm):
             'email',
             'first_name',
             'last_name',
+        }
+        exclude = {
+            'password',
+        }
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = {
+            'address',
+            'city',
+            'state',
+            'zipcode',
+        }
+        exclude = {
             'password',
         }

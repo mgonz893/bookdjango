@@ -12,7 +12,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
 from .models import Book, Wishlist, Shopping_Cart
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from catalog.forms import RegistrationForm, EditProfileForm
+from catalog.forms import RegistrationForm, EditProfileForm, ProfileForm
 from django.contrib.auth.models import User
 import random
 
@@ -89,7 +89,8 @@ class WishlistsView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
-            context['wishlists'] = Wishlist.objects.filter(user=self.request.user)
+            context['wishlists'] = Wishlist.objects.filter(
+                user=self.request.user)
         return context
 
 
@@ -142,11 +143,17 @@ def profile(request):
 def editprofile(request):
     if request.method == 'POST':
         form = EditProfileForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(
+            request.POST, instance=request.user.userprofile)
 
         if form.is_valid():
             form.save()
+            profile_form.save()
             return redirect('/catalog/profile/')
     else:
         form = EditProfileForm(instance=request.user)
-    args = {'form': form}
+        profile_form = ProfileForm(instance=request.user.userprofile)
+    args = {'form': form,
+            'profile_form': profile_form}
+
     return render(request, 'editprofile.html', args)
