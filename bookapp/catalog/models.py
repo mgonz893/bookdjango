@@ -6,6 +6,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.contrib.auth.models import User
 from datetime import date
 from django.db.models.signals import post_save
+from django.conf import settings
 # Create your models here.
 
 
@@ -94,6 +95,24 @@ class Book(models.Model):
         """Returns the url to access a detail record for this book."""
         return reverse('book-detail', args=[str(self.id)])
 
+class OrderBook(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+
+    def _str_(self):
+        return self.title
+
+
+class Order(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                            on_delete=models.CASCADE)
+    items = models.ManyToManyField(OrderBook)
+    start_date = models.DateTimeField(auto_now_add=True)
+    ordered_date = models.DateTimeField()
+    ordered = models.BooleanField(default=False)
+
+    def _str_(self):
+        return self.user.username
+ 
 
 class BookRating(models.Model):
     book = models.ForeignKey('Book', on_delete=models.SET_NULL, null=True)

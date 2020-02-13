@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import permission_required
 from django.views import generic
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
-from .models import Book, Wishlist, Shopping_Cart
+from .models import Book, Wishlist, Shopping_Cart, Order, OrderBook
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from catalog.forms import RegistrationForm, EditProfileForm, ProfileForm
 from django.contrib.auth.models import User
@@ -19,6 +19,12 @@ import random
 
 # Create your views here.
 from catalog.models import Book, Author, Genre, UserProfile
+
+def products(request):
+    context = {
+        'books': Book.objects.all()
+    }
+    return render(request, "book_list.html", context)
 
 
 def index(request):
@@ -155,3 +161,8 @@ def editprofile(request):
             'profile_form': profile_form}
 
     return render(request, 'editprofile.html', args)
+
+
+def add_to_cart(request, slug):
+    book = get_object_or_404(Book, slug=slug)
+
