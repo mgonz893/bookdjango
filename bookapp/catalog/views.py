@@ -20,6 +20,7 @@ import random
 # Create your views here.
 from catalog.models import Book, Author, Genre, UserProfile
 
+
 def products(request):
     context = {
         'books': Book.objects.all()
@@ -165,4 +166,3 @@ def editprofile(request):
 
 def add_to_cart(request, slug):
     book = get_object_or_404(Book, slug=slug)
-
