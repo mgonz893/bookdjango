@@ -58,3 +58,4 @@ class ProfileForm(forms.ModelForm):
         }
 
         field_order = ['address', 'city', 'state', 'zipcode']
+

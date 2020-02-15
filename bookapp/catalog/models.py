@@ -36,7 +36,9 @@ post_save.connect(create_profile, sender=User)
 class CreditCard(models.Model):
     username = models.ForeignKey(
         'UserProfile', on_delete=models.SET_NULL, null=True)
-    ccnumber = models.IntegerField()
+    ccnumber = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(9999999999999999)]) #16 digits for valid CC number
+    ccv = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(999)])
+    expiration = models.DateField(help_text="(MM/YY)",null=True, auto_now_add=False, auto_now=False, blank=True)
 
     def __str__(self):
         return self.ccnumber
