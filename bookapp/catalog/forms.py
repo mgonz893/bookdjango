@@ -48,6 +48,7 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = {
+            'nickname',
             'address',
             'city',
             'state',
@@ -57,5 +58,5 @@ class ProfileForm(forms.ModelForm):
             'password',
         }
 
-        field_order = ['address', 'city', 'state', 'zipcode']
+        field_order = ['nickname', 'address', 'city', 'state', 'zipcode']
 
