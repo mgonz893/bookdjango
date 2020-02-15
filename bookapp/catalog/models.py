@@ -36,9 +36,12 @@ post_save.connect(create_profile, sender=User)
 class CreditCard(models.Model):
     username = models.ForeignKey(
         'UserProfile', on_delete=models.SET_NULL, null=True)
-    ccnumber = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(9999999999999999)]) #16 digits for valid CC number
-    ccv = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(999)])
-    expiration = models.DateField(help_text="(MM/YY)",null=True, auto_now_add=False, auto_now=False, blank=True)
+    ccnumber = models.PositiveIntegerField(default=0, validators=[
+                                           MaxValueValidator(9999999999999999)])  # 16 digits for valid CC number
+    ccv = models.PositiveIntegerField(
+        default=0, validators=[MaxValueValidator(999)])
+    expiration = models.DateField(
+        help_text="(MM/YY)", null=True, auto_now_add=False, auto_now=False, blank=True)
 
     def __str__(self):
         return self.ccnumber
@@ -162,17 +165,10 @@ class Shopping_Cart(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     books = models.ManyToManyField(Book)
-    title = models.CharField(max_length=200)
     quantity = models.IntegerField(default="1")
-    author = models.ForeignKey('Author', on_delete=models.SET_NULL, null=True)
-    publisher = models.CharField(max_length=50, default='Publisher')
     summary = models.TextField(
         max_length=1000, help_text='Enter a brief description of the book')
-    ratings = models.ManyToManyField(BookRating)
-    price = models.FloatField(default="9.99")
-    subtotal = models.FloatField(default=price)
-    genre = models.ManyToManyField(
-        Genre, help_text='Select a genre for this book')
+    subtotal = models.FloatField(default='9.99')
     name = models.CharField(max_length=100, default='Shopping Cart')
 
     def __str__(self):
