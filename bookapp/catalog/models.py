@@ -171,7 +171,6 @@ class Shopping_Cart(models.Model):
     subtotal = models.FloatField(default=price)
     genre = models.ManyToManyField(
         Genre, help_text='Select a genre for this book')
-    model_pic = models.ImageField(upload_to='pics/', blank=True, null=True)
     name = models.CharField(max_length=100, default='Shopping Cart')
 
     def __str__(self):
