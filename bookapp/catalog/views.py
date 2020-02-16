@@ -116,6 +116,12 @@ class BookListView(generic.ListView):
 
 class BookDetailView(generic.DetailView):
     model = Book
+    queryset = Book.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super(BookDetailView, self).get_context_data(**kwargs)
+        context['rating'] = BookRating.objects.filter(book=self.get_object())
+        return context
 
 
 def shop_cart(request):
@@ -166,8 +172,7 @@ def editprofile(request):
 
 
 def shipaddr(request):
-    args = {'user': request.user,
-            'shipaddr': request.shippingaddr}
+    args = {'user': request.user}
     return render(request, 'shipaddr.html', args)
 
 

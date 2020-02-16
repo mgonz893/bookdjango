@@ -44,7 +44,7 @@ class CreditCard(models.Model):
         help_text="(MM/YY)", null=True, auto_now_add=False, auto_now=False, blank=True)
 
     def __str__(self):
-        return self.ccnumber
+        return f'{self.username} - {self.ccnumber}'
 
 
 class ShippingAddr(models.Model):
@@ -56,7 +56,7 @@ class ShippingAddr(models.Model):
     zipcode = models.IntegerField()
 
     def __str__(self):
-        return f'{self.username} {self.address}'
+        return f'{self.username} - {self.address}'
 
 
 class Genre(models.Model):
@@ -130,7 +130,7 @@ class BookRating(models.Model):
     rating = models.SmallIntegerField(choices=[(i, i) for i in range(1, 6)])
 
     def __str__(self):
-        return self.review
+        return f'{self.user} - {self.book} - {self.rating}'
 
 
 class Author(models.Model):
@@ -160,7 +160,7 @@ class Wishlist(models.Model):
     name = models.CharField(max_length=100, default='New Wishlist')
 
     def __str__(self):
-        return self.name
+        return f'{self.user} - {self.name}'
 
 
 class Shopping_Cart(models.Model):
