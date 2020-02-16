@@ -6,7 +6,7 @@
   <ul>
     {% for book in shopping_cart %}
       <li>
-        <a href="{{ book.get_absolute_url }}">{{ book.title }}</a> ({{book.author}}) <strong>${{book.price}}</strong> <button type="button">Add to Cart</button>
+        <a href="{{ book.get_absolute_url }}">{{ book.title }}</a> ({{book.author}}) <strong>${{book.price}}</strong>
         <p><img src={{book.model_pic.url}} style="width: 100px; height: 100px" /></p>
       </li>
     {% endfor %}

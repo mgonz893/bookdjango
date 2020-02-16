@@ -2,10 +2,11 @@ from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 import datetime
 from django.db.models import Q
+from django.utils import timezone
 from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import permission_required
 from django.views import generic
 from django.shortcuts import render
@@ -166,3 +167,18 @@ def editprofile(request):
 
 def add_to_cart(request, slug):
     book = get_object_or_404(Book, slug=slug)
+    order_book = OrderBook.objects.create(book=book)
+    order_qs = Order.objects.filter(user=request.user, is_ordered=False)
+    if order_qs.exists():
+        order = order_qs[0]
+        if order.items.filter(book__slug =book.slug).exists():
+            order_book.quantity += 1
+            order_book.save()
+        else:
+            order.items.add(order_book)
+    else:
+        ordered_date = timezone.now()
+        order = Order.objects.create(user=request.user, ordered_date = ordered_date)
+        order.items.add(order_book)
+    return redirect("book-detail", slug = slug)
+    #return redirect("core:book-detail", slug = slug)

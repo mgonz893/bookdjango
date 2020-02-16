@@ -89,6 +89,8 @@ class Book(models.Model):
     # requires to install Pillow to work: python -m pip install Pillow
     model_pic = models.ImageField(upload_to='pics/', blank=True, null=True)
 
+    slug = models.SlugField(null=True) #had to be set to null in order to run
+
     class Meta:
         verbose_name_plural = "books"
 
@@ -100,12 +102,20 @@ class Book(models.Model):
         """Returns the url to access a detail record for this book."""
         return reverse('book-detail', args=[str(self.id)])
 
+    def get_add_to_cart_url(self):
+        return reverse("add-to-cart", kwargs={
+            'slug':self.slug
+        })
+        #return reverse('book-detail', args=[str(self.id)])
+
 
 class OrderBook(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
 
+    quantity =  models.IntegerField(default=1)
+
     def _str_(self):
-        return self.title
+        return f"{self.quantity} of {self.item.title}"
 
 
 class Order(models.Model):
@@ -165,9 +175,6 @@ class Shopping_Cart(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     books = models.ManyToManyField(Book)
-    quantity = models.IntegerField(default="1")
-    summary = models.TextField(
-        max_length=1000, help_text='Enter a brief description of the book')
     subtotal = models.FloatField(default='9.99')
     name = models.CharField(max_length=100, default='Shopping Cart')
 
