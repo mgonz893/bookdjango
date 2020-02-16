@@ -20,6 +20,7 @@ import random
 
 # Create your views here.
 from catalog.models import Book, Author, Genre, UserProfile
+from django.db.models.aggregates import Avg
 
 
 def products(request):
@@ -121,6 +122,7 @@ class BookDetailView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super(BookDetailView, self).get_context_data(**kwargs)
         context['rating'] = BookRating.objects.filter(book=self.get_object())
+        context['average'] = BookRating.objects.aggregate(avge=Avg('rating'))
         return context
 
 

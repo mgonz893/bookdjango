@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from datetime import date
 from django.db.models.signals import post_save
 from django.conf import settings
+from django.db.models import Avg
 # Create your models here.
 
 
