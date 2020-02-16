@@ -10,6 +10,6 @@
   <p><strong>Author Biography: </strong>{{ book.author.biography }}
   <p><strong>Cover: </strong><a href="{{book.model_pic.url}}">
   <img src="{{book.model_pic.url}}" width="240"></img></a></p>
-  <p><strong>Submitted Comments & Rating: </strong></p>
+  <p><strong>Submitted Comments & Rating: {{book.}}</strong></p>
   <a href="{{ book.get_add_to_cart_url }}"> <button type="button">Add to Cart</button> </a>
 {% endblock %}
