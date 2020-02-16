@@ -165,20 +165,31 @@ def editprofile(request):
     return render(request, 'editprofile.html', args)
 
 
+def shipaddr(request):
+    args = {'user': request.user}
+    return render(request, 'shipaddr.html', args)
+
+
+def creditcards(request):
+    args = {'user': request.user}
+    return render(request, 'creditcards.html', args)
+
+
 def add_to_cart(request, slug):
     book = get_object_or_404(Book, slug=slug)
     order_book = OrderBook.objects.create(book=book)
     order_qs = Order.objects.filter(user=request.user, is_ordered=False)
     if order_qs.exists():
         order = order_qs[0]
-        if order.items.filter(book__slug =book.slug).exists():
+        if order.items.filter(book__slug=book.slug).exists():
             order_book.quantity += 1
             order_book.save()
         else:
             order.items.add(order_book)
     else:
         ordered_date = timezone.now()
-        order = Order.objects.create(user=request.user, ordered_date = ordered_date)
+        order = Order.objects.create(
+            user=request.user, ordered_date=ordered_date)
         order.items.add(order_book)
-    return redirect("book-detail", slug = slug)
-    #return redirect("core:book-detail", slug = slug)
+    return redirect("book-detail", slug=slug)
+    # return redirect("core:book-detail", slug = slug)

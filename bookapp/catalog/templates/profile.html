@@ -2,6 +2,8 @@
 
 {% block content %}
   <h2>Profile</h2>
+<a href= {% url 'shipaddr' %}> <button type="button">Shipping Addresses</button> </a>
+<a href= {% url 'creditcards' %}> <button type="button">Credit Cards</button> </a>  
 <p><strong>Username:</strong> {{user}}</p>
 <p><strong>First name:</strong> {{user.first_name}}</p>
 <p><strong>Last name:</strong> {{user.last_name}}</p>
