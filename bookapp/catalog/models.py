@@ -116,8 +116,8 @@ class OrderBook(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
 
-    def _str_(self):
-        return self.title
+    def __str__(self):
+        return f'{self.book} - Qty: {self.quantity}'
 
 
 class Order(models.Model):
