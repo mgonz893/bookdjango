@@ -4,6 +4,7 @@
   <h1>Title: {{ book.title }}</h1>
   <p><strong>Description: </strong> {{ book.summary }}</p>
   <p><strong>Publishing Info: </strong>{{ book.publisher }}</p> 
+  <p><strong>Publishing Date: </strong>{{ book.publishing_date }}</p> 
   <p><strong>Genre: </strong> {{ book.genre.all|join:", " }}</p> 
   <p><strong>Author: </strong> <a href="../author/?q={{ book.author.first_name }}+{{ book.author.last_name }}" title="Click here to search books by author!">{{book.author}}</a>
   <p><strong>Author Biography: </strong>{{ book.author.biography }}

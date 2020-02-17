@@ -93,6 +93,7 @@ class Book(models.Model):
 
     # requires to install Pillow to work: python -m pip install Pillow
     model_pic = models.ImageField(upload_to='pics/', blank=True, null=True)
+    slug = models.SlugField()
 
     class Meta:
         verbose_name_plural = "books"
