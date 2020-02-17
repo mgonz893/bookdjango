@@ -79,6 +79,7 @@ class Book(models.Model):
     author = models.ForeignKey('Author', on_delete=models.SET_NULL, null=True)
 
     publisher = models.CharField(max_length=50, default='Publisher')
+    publishing_date = models.DateTimeField()
 
     summary = models.TextField(
         max_length=1000, help_text='Enter a brief description of the book')
