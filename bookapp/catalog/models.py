@@ -106,24 +106,30 @@ class Book(models.Model):
         """Returns the url to access a detail record for this book."""
         return reverse('book-detail', args=[str(self.id)])
 
+    def get_add_to_cart_url(self):
+        return reverse('add-to-cart', kwargs={
+            'slug': self.slug
+        })
+
 
 class OrderBook(models.Model):
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
 
     def _str_(self):
         return self.title
 
 
 class Order(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE)
-    items = models.ManyToManyField(OrderBook)
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True)
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
     ordered = models.BooleanField(default=False)
+    items = models.ManyToManyField(OrderBook)
 
-    def _str_(self):
-        return self.user.username
+    def __str__(self):
+        return f'{self.user} - {self.items}'
 
 
 class BookRating(models.Model):

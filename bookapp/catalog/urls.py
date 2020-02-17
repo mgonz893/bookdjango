@@ -17,10 +17,13 @@ urlpatterns = [
     path('books/', views.BookListView.as_view(), name='books'),
     path('book/<int:pk>', views.BookDetailView.as_view(),
          name='book-detail'),  # may need to change back to slug
+    path('book/<slug>', views.BookDetailView.as_view(),
+         name='book-detail'),  # may need to change back to slug
+
     path('shoppingcart/', views.shop_cart, name='shoppingcart'),
     path('wishlists/', views.WishlistsView.as_view(), name='wishlists'),
     # need to figure how to get this link to work
-    path('add-to-cart/<slug>/', views.add_to_cart, name='add-to-cart'),
+    path('add-to-cart/<slug>', views.add_to_cart, name='add-to-cart'),
     path('shipaddr/', views.shipaddr, name='shipaddr'),
     path('creditcards/', views.creditcards, name='creditcards'),
 ]

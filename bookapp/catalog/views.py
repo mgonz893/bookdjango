@@ -188,7 +188,7 @@ def creditcards(request):
 def add_to_cart(request, slug):
     book = get_object_or_404(Book, slug=slug)
     order_book = OrderBook.objects.create(book=book)
-    order_qs = Order.objects.filter(user=request.user, is_ordered=False)
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
     if order_qs.exists():
         order = order_qs[0]
         if order.items.filter(book__slug=book.slug).exists():

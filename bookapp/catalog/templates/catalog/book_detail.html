@@ -15,5 +15,5 @@
   {% for ratings in rating %}
   <li>{{ratings.user}}: {{ratings.review}} <p>Rating: {{ratings.rating}} stars</p></li>
   {% endfor %}
-  <a href="{{ book.get_add_to_cart_url }}"> <button type="button">Add to Cart</button> </a>
+  <a href="{{book.get_add_to_cart_url}}"> <button type="button">Add to Cart</button> </a>
 {% endblock %}
