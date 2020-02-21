@@ -111,8 +111,16 @@ class Book(models.Model):
             'slug': self.slug
         })
 
+    def get_remove_from_cart_url(self):
+        return reverse('remove-from-cart', kwargs={
+            'slug': self.slug
+        })
+
 
 class OrderBook(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True)
+    ordered = models.BooleanField(default=False)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
 

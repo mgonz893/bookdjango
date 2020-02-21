@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.utils import timezone
 from django.db.models.query import QuerySet
 from django.urls import reverse
+from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect
 from django.contrib.auth.decorators import permission_required
@@ -187,19 +188,49 @@ def creditcards(request):
 
 def add_to_cart(request, slug):
     book = get_object_or_404(Book, slug=slug)
-    order_book = OrderBook.objects.create(book=book)
+    order_book, created = OrderBook.objects.get_or_create(
+        book=book,
+        user=request.user,
+        ordered=False)
     order_qs = Order.objects.filter(user=request.user, ordered=False)
     if order_qs.exists():
         order = order_qs[0]
         if order.items.filter(book__slug=book.slug).exists():
             order_book.quantity += 1
             order_book.save()
+            messages.info(request, "This book quantity was updated.")
         else:
             order.items.add(order_book)
+            messages.info(request, "This book was added to your cart.")
+            return redirect("book-detail", slug=slug)
     else:
         ordered_date = timezone.now()
         order = Order.objects.create(
             user=request.user, ordered_date=ordered_date)
         order.items.add(order_book)
-    return redirect("book-detail", slug=slug)
-    # return redirect("core:book-detail", slug = slug)
+        messages.info(request, "This book was added to your cart.")
+        return redirect("book-detail", slug=slug)
+
+def remove_from_cart(request, slug):
+    book = get_object_or_404(Book, slug=slug)
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
+    if order_qs.exists():
+        order = order_qs[0]
+        if order.items.filter(book__slug=book.slug).exists():
+            order_book = OrderBook.objects.filter(
+                            book=book,
+                            user=request.user,
+                            ordered=False
+                            )[0]
+            order.items.remove(order_book)
+            messages.info(request, "This book was removed from your cart.")
+            return redirect("book-detail", slug=slug)
+        else:
+            messages.info(request, "This book was not in your cart.")
+            return redirect("book-detail", slug=slug)
+
+    else:
+        messages.info(request, "You do not have an active order.")
+        return redirect("book-detail", slug=slug)
+
+   
