@@ -88,7 +88,7 @@ class SearchResultsView(generic.ListView):
         object_list = Book.objects.filter(
             Q(title__icontains=query) | Q(genre__name__icontains=query)
         )
-        return object_list
+        return object_list.order_by('genre')
 
 
 class WishlistsView(generic.ListView):
@@ -114,7 +114,7 @@ class ShoppingCart(generic.ListView):
 class BookListView(generic.ListView):
     model = Book
     paginate_by = 10
-    ordering = ['title', 'author', 'price']
+    ordering = ['genre', 'title', 'price']
 
 
 class BookDetailView(generic.DetailView):
@@ -130,7 +130,10 @@ class BookDetailView(generic.DetailView):
 
 
 def shop_cart(request):
-    args = {'user': request.user}
+    user = request.user
+    orders = OrderBook.objects.filter(user=user)
+    args = {'user': request.user,
+            'shopping_cart': orders}
     return render(request, 'shopping_cart.html', args)
 
 
@@ -211,6 +214,7 @@ def add_to_cart(request, slug):
         messages.info(request, "This book was added to your cart.")
         return redirect("book-detail", slug=slug)
 
+
 def remove_from_cart(request, slug):
     book = get_object_or_404(Book, slug=slug)
     order_qs = Order.objects.filter(user=request.user, ordered=False)
@@ -218,10 +222,10 @@ def remove_from_cart(request, slug):
         order = order_qs[0]
         if order.items.filter(book__slug=book.slug).exists():
             order_book = OrderBook.objects.filter(
-                            book=book,
-                            user=request.user,
-                            ordered=False
-                            )[0]
+                book=book,
+                user=request.user,
+                ordered=False
+            )[0]
             order.items.remove(order_book)
             messages.info(request, "This book was removed from your cart.")
             return redirect("book-detail", slug=slug)
@@ -232,5 +236,3 @@ def remove_from_cart(request, slug):
     else:
         messages.info(request, "You do not have an active order.")
         return redirect("book-detail", slug=slug)
-
-   
