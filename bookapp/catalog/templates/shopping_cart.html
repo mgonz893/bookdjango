@@ -4,10 +4,11 @@
   <h2>Shopping Cart</h2>
   {% if shopping_cart %}
   <ul>
-    {% for book in shopping_cart %}
+    {% for orderbook in shopping_cart %}
       <li>
-        <a href="{{ book.get_absolute_url }}">{{ book.title }}</a> ({{book.author}}) <strong>${{book.price}}</strong>
-        <p><img src={{book.model_pic.url}} style="width: 100px; height: 100px" /></p>
+        <a href="{{ orderbook.book.get_absolute_url }}">{{ orderbook.book.title }}</a> ({{orderbook.book.author}}) <strong>${{orderbook.book.price}}</strong>
+        <p><img src={{orderbook.book.model_pic.url}} style="width: 100px; height: 100px" /></p>
+        <p>Quantity: {{orderbook.quantity}}</p>
       </li>
     {% endfor %}
   </ul>
