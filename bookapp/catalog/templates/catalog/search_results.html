@@ -2,7 +2,18 @@
 
 {% block content %}
   <h2>Search Results</h1>
-
+<form action="">
+  <p>Sort by: </p>
+  <input type="radio" id="title" name="sort" value="Title">
+  <label for="title">Title</label>
+  <input type="radio" id="author" name="sort" value="Author">
+  <label for="author">Author</label>
+  <input type="radio" id="price" name="sort" value="Price">
+  <label for="price">Price</label>
+  <input type="radio" id="rating" name="sort" value="Rating">
+  <label for="rating">Rating</label>
+  <input type="radio" id="date" name="sort" value="Date">
+  <label for="date">Date</label>
 <ul>
   {% for book in object_list %}
     <li>

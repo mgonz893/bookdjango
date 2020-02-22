@@ -114,7 +114,9 @@ class ShoppingCart(generic.ListView):
 class BookListView(generic.ListView):
     model = Book
     paginate_by = 10
-    ordering = ['genre', 'title', 'price']
+
+    class Meta:
+        ordering = ['genre', 'title', 'price']
 
 
 class BookDetailView(generic.DetailView):
