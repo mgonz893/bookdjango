@@ -14,7 +14,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
 from .models import Book, Wishlist, Shopping_Cart, Order, OrderBook, BookRating
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from catalog.forms import RegistrationForm, EditProfileForm, ProfileForm
+from catalog.forms import RegistrationForm, EditProfileForm, ProfileForm, ReviewForm
 from django.contrib.auth.models import User
 import random
 
@@ -238,3 +238,8 @@ def remove_from_cart(request, slug):
     else:
         messages.info(request, "You do not have an active order.")
         return redirect("book-detail", slug=slug)
+
+
+def post_new(request):
+    form = ReviewForm()
+    return render(request, 'createrev.html', {'form': form})
