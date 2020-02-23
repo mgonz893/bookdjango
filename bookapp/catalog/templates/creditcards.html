@@ -2,7 +2,13 @@
 
 {% block content %}
   <h2>Credit Cards</h2>
-<p><strong>Card Number:</strong> </p>
-<p><strong>CVV:</strong> </p> 
+    {% for card in cards %}
+    <ul>
+  <li>
+    <strong>Card Number: {{card.ccnumber}}</strong> <p></p>
+    <p><strong>CVV: {{card.ccv}}</strong> </p>  
+  </li>  
+  </ul>
+  {% endfor %}  
   
 {% endblock %}
