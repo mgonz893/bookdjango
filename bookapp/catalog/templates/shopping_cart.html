@@ -1,5 +1,7 @@
 {% extends "base_generic.html" %}
 
+{% load test %}
+
 {% block content %}
   <h2>Shopping Cart</h2>
   {% if shopping_cart %}
@@ -10,6 +12,7 @@
         <a href="{{ orderbook.book.get_absolute_url }}">{{ orderbook.book.title }}</a> ({{orderbook.book.author}}) <strong>${{orderbook.book.price | multiply:orderbook.quantity}}</strong>
         <p><img src={{orderbook.book.model_pic.url}} style="width: 100px; height: 100px" /></p>
         <p>Quantity: {{orderbook.quantity}}</p>
+        <p>Price: {{ orderbook.quantity | multiply:book.price }}</p>
       </li>
     {% endfor %}
   </ul>
