@@ -216,7 +216,7 @@ def add_to_cart(request, slug):
         order.items.add(order_book)
         messages.info(request, "This book was added to your cart.")
         return redirect("book-detail", slug=slug)
-   
+
 
 def remove_from_cart(request, slug):
     book = get_object_or_404(Book, slug=slug)
