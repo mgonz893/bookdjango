@@ -204,6 +204,7 @@ def add_to_cart(request, slug):
             order_book.quantity += 1
             order_book.save()
             messages.info(request, "This book quantity was updated.")
+            return redirect("book-detail", slug=slug)
         else:
             order.items.add(order_book)
             messages.info(request, "This book was added to your cart.")
@@ -215,7 +216,7 @@ def add_to_cart(request, slug):
         order.items.add(order_book)
         messages.info(request, "This book was added to your cart.")
         return redirect("book-detail", slug=slug)
-
+   
 
 def remove_from_cart(request, slug):
     book = get_object_or_404(Book, slug=slug)
@@ -228,7 +229,10 @@ def remove_from_cart(request, slug):
                 user=request.user,
                 ordered=False
             )[0]
-            order.items.remove(order_book)
+            if order_book.quantity > 1:
+                order_book.delete()
+            else:
+                order_book.delete()
             messages.info(request, "This book was removed from your cart.")
             return redirect("book-detail", slug=slug)
         else:

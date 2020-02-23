@@ -5,5 +5,3 @@ register = template.Library()
 
 def multiply(value, arg):
     return value * arg
-
-# Create your tests here.

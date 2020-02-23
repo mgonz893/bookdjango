@@ -123,7 +123,8 @@ class OrderBook(models.Model):
     ordered = models.BooleanField(default=False)
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=1)
-
+    order_price = models.PositiveIntegerField(editable=False, blank=True, null=True)
+    
     def __str__(self):
         return f'{self.book} - Qty: {self.quantity}'
 
