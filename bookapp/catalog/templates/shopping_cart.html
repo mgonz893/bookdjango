@@ -5,9 +5,9 @@
   {% if shopping_cart %}
   <ul>
     {% for orderbook in shopping_cart %}
+    {% load test %}
       <li>
-
-        <a href="{{ orderbook.book.get_absolute_url }}">{{ orderbook.book.title }}</a> ({{orderbook.book.author}}) <strong>${{orderbook.book.price}}</strong>
+        <a href="{{ orderbook.book.get_absolute_url }}">{{ orderbook.book.title }}</a> ({{orderbook.book.author}}) <strong>${{orderbook.book.price | multiply:orderbook.quantity}}</strong>
         <p><img src={{orderbook.book.model_pic.url}} style="width: 100px; height: 100px" /></p>
         <p>Quantity: {{orderbook.quantity}}</p>
       </li>
