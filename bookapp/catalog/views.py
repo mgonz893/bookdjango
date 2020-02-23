@@ -12,7 +12,7 @@ from django.contrib.auth.decorators import permission_required
 from django.views import generic
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
-from .models import Book, Wishlist, Shopping_Cart, Order, OrderBook, BookRating
+from .models import Book, Wishlist, Shopping_Cart, Order, OrderBook, BookRating, ShippingAddr
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from catalog.forms import RegistrationForm, EditProfileForm, ProfileForm, ReviewForm
 from django.contrib.auth.models import User
@@ -182,11 +182,16 @@ def editprofile(request):
 
 
 def shipaddr(request):
-    args = {'user': request.user}
+    user = request.user.userprofile
+    ships = ShippingAddr.objects.filter(username=user)
+    args = {'user': request.user,
+            'ships': ships
+            }
     return render(request, 'shipaddr.html', args)
 
 
 def creditcards(request):
+
     args = {'user': request.user}
     return render(request, 'creditcards.html', args)
 
