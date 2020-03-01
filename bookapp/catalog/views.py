@@ -94,13 +94,12 @@ class SearchResultsView(generic.ListView):
 class WishlistsView(generic.ListView):
     model = Wishlist
     template_name = 'catalog/wishlists.html'
-    context_object_name = 'wishlists_list'
     queryset = Book.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
-            context['wishlists'] = Wishlist.objects.filter(
+            context['wishlist'] = Wishlist.objects.filter(
                 user=self.request.user)
         return context
 
@@ -190,9 +189,6 @@ def shipaddr(request):
     return render(request, 'shipaddr.html', args)
 
 
-
-
-
 def addshippingaddress(request):
     if request.method == 'POST':
         form = ShippingAddressForm(request.POST)
@@ -201,15 +197,11 @@ def addshippingaddress(request):
             return redirect('/catalog/shipaddr')
     else:
         form = ShippingAddressForm()
-        args={
+        args = {
             'form': form
         }
-    
+
     return render(request, 'addshippingaddr.html', args)
-
-
-
-
 
 
 def creditcards(request):

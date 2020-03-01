@@ -11,6 +11,19 @@
   <p><strong>Cover: </strong><a href="{{book.model_pic.url}}">
   <img src="{{book.model_pic.url}}" width="240"></img></a></p>
   <p><strong>Average Rating: {{average.avge}} </strong></p>
+
+  Save to Wishlist:
+  <select  name="wish_value" >
+    <option value="">---------</option>
+    {% for wish in user.wishlist_set.all %}
+    <option value="{{ wish.id }}"{% if wish.id in selected_ids %}selected{% endif %}>
+        {{ wish.name }}
+    </option>
+    {% endfor %}
+ </select>
+ <p></p>
+
+
   <p><strong><a href="{% url 'post_new' %}"> <button type="button">Create Customer Review</button> </a></strong></p>
   <p><strong>Submitted Comments & Rating: </strong></p>
   {% for ratings in rating %}

@@ -4,11 +4,12 @@
 {% if user.is_authenticated %}
     <h1>Your Wishlists</h1>
     <p>Books</p>
-    {% for wishlist in wishlists %}
+    {% for wishlist in wishlist %}
     <h3>{{ wishlist.name }}</h3>
     <ul>
-    <li> {{wishlist.books}} </li>
+    <li> {{ wishlist.books }} </li>
     </ul>
+
     {% endfor %}
 {% else %}
     <h1>Oops!</h1>
