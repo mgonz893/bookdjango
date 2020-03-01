@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import UserChangeForm
-from .models import UserProfile, BookRating, ShippingAddr
+from .models import UserProfile, BookRating, ShippingAddr, Wishlist
 
 
 class RegistrationForm(UserCreationForm):
@@ -58,6 +58,7 @@ class ProfileForm(forms.ModelForm):
         }
 
         field_order = ['address', 'city', 'state', 'zipcode']
+
 
 class ShippingAddressForm(forms.ModelForm):
     class Meta:

@@ -4,7 +4,7 @@
 {% if user.is_authenticated %}
     <h1>Your Wishlists</h1>
     <p>Books</p>
-    {% for wishlist in wishlist %}
+    {% for wishlist in wishlist%}
     <h3>{{ wishlist.name }}</h3>
     <ul>
     <li> {{ wishlist.books }} </li>
