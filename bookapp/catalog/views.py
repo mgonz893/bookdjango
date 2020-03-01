@@ -127,7 +127,15 @@ class BookDetailView(generic.DetailView):
         context['rating'] = BookRating.objects.filter(book=self.get_object())
         context['average'] = BookRating.objects.filter(
             book=self.get_object()).aggregate(avge=Avg('rating'))
+        context['wishlists'] = Wishlist.objects.all()
         return context
+
+
+def add_to_wishlist(request, slug):
+    if request.method == 'POST':
+        form = Wishlist(request.POST)
+        if form.is_valid():
+            return redirect("book-detail", slug=slug)
 
 
 def shop_cart(request):
