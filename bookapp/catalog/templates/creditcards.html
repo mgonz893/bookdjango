@@ -7,8 +7,9 @@
   <li>
     <strong>Card Number: </strong>{{card.ccnumber}} <p></p>
     <p><strong>CVV: </strong>{{card.ccv}} </p>  
+     <p><strong>Expiration date: </strong>{{card.expiration|date:"M/Y"}} </p>  
   </li>  
-   <p><a href="">Edit Credit Card Information</a></p>
+   <p><a href="">Manage Credit Card Information</a></p>
   </ul>
   {% endfor %}  
   

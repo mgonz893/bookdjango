@@ -14,7 +14,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
 from .models import Book, Wishlist, Shopping_Cart, Order, OrderBook, BookRating, ShippingAddr, CreditCard
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from catalog.forms import RegistrationForm, EditProfileForm, ProfileForm, ReviewForm
+from catalog.forms import RegistrationForm, EditProfileForm, ProfileForm, ReviewForm, ShippingAddressForm
 from django.contrib.auth.models import User
 import random
 
@@ -188,6 +188,28 @@ def shipaddr(request):
             'ships': ships
             }
     return render(request, 'shipaddr.html', args)
+
+
+
+
+
+def addshippingaddress(request):
+    if request.method == 'POST':
+        form = ShippingAddressForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/catalog/shipaddr')
+    else:
+        form = ShippingAddressForm()
+        args={
+            'form': form
+        }
+    
+    return render(request, 'addshippingaddr.html', args)
+
+
+
+
 
 
 def creditcards(request):

@@ -24,6 +24,7 @@ urlpatterns = [
     # need to figure how to get this link to work
     path('add-to-cart/<slug>', views.add_to_cart, name='add-to-cart'),
     path('shipaddr/', views.shipaddr, name='shipaddr'),
+    path('shipaddr/addshipaddr', views.addshippingaddress, name='addshippingaddr'),
     path('creditcards/', views.creditcards, name='creditcards'),
     path('remove-from-cart/<slug>',
          views.remove_from_cart, name='remove-from-cart'),
