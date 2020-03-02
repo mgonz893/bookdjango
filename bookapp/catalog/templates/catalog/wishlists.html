@@ -6,11 +6,13 @@
     {% for wishlist in wishlist%}
     <h4>{{ wishlist.name }}</h4>
     <ul>
-    <li> {{ wishlist.books }} </li>
-    </ul>
-
+    {% for book in wishlist.books.all %}
+    <li>{{ book.title }}</li>
     {% endfor %}
-{% else %}
+    </form>
+    </ul>
+    {% endfor %}
+    {% else %}
     <h1>Oops!</h1>
     <p>You are not <a href="{% url 'login' %}">logged in</a>.</p>
 {% endif %}

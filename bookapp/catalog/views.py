@@ -281,7 +281,6 @@ def post_new(request):
 
 def add_to_wishlist(request, slug):
     wishvalue = request.POST['wish_value']
-    print(wishvalue)
     book = get_object_or_404(Book, slug=slug)
 
     order_qs = Wishlist.objects.filter(id=wishvalue)
@@ -299,27 +298,29 @@ def add_to_wishlist(request, slug):
         return redirect("book-detail", slug=slug)
 
 
+def Wishlists(request):
+    model = Wishlist
+    queryset = Wishlist.objects.filter(user=request.user)
+    args = {'user': request.user,
+            'wishlist': queryset,
+            }
+    return render(request, 'catalog/wishlists.html', args)
+
+
 def remove_from_wishlist(request, slug):
+    wishvalue = request.POST['wish_value']
     book = get_object_or_404(Book, slug=slug)
-    order_qs = Order.objects.filter(user=request.user, ordered=False)
+
+    order_qs = Wishlist.objects.filter(id=wishvalue)
     if order_qs.exists():
         order = order_qs[0]
-        if order.items.filter(book__slug=book.slug).exists():
-            order_book = OrderBook.objects.filter(
-                book=book,
-                user=request.user,
-                ordered=False
-            )[0]
-            if order_book.quantity > 1:
-                order_book.delete()
-            else:
-                order_book.delete()
-            messages.info(request, "This book was removed from your cart.")
+        if order.books.filter(slug=book.slug).exists():
+            order.books.remove(book)
+            messages.info(request, "This book has been removed from wishlist.")
             return redirect("book-detail", slug=slug)
         else:
-            messages.info(request, "This book was not in your cart.")
+            messages.info(request, "This book is not in your wishlist.")
             return redirect("book-detail", slug=slug)
-
     else:
-        messages.info(request, "You do not have an active order.")
+        messages.info(request, "There was an error.")
         return redirect("book-detail", slug=slug)
