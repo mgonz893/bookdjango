@@ -84,9 +84,3 @@ class ReviewForm(forms.ModelForm):
             'rating',
             'review',
         }
-
-
-class Wishlist(forms.ModelForm):
-    class Meta:
-        model = Wishlist
-        fields = '__all__'

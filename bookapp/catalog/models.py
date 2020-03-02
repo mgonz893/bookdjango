@@ -121,6 +121,16 @@ class Book(models.Model):
             'slug': self.slug
         })
 
+    def get_add_to_wishlist_url(self):
+        return reverse('add-to-wishlist', kwargs={
+            'slug': self.slug
+        })
+
+    def get_remove_from_wishlist_url(self):
+        return reverse('remove-from-wishlist', kwargs={
+            'slug': self.slug
+        })
+
 
 class OrderBook(models.Model):
     user = models.ForeignKey(

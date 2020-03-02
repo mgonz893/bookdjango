@@ -277,3 +277,49 @@ def remove_from_cart(request, slug):
 def post_new(request):
     form = ReviewForm()
     return render(request, 'createrev.html', {'form': form})
+
+
+def add_to_wishlist(request, slug):
+    wishvalue = request.POST['wish_value']
+    print(wishvalue)
+    book = get_object_or_404(Book, slug=slug)
+
+    order_qs = Wishlist.objects.filter(id=wishvalue)
+    if order_qs.exists():
+        order = order_qs[0]
+        if order.books.filter(slug=book.slug).exists():
+            messages.info(request, "This book is already in wishlist.")
+            return redirect("book-detail", slug=slug)
+        else:
+            order.books.add(book)
+            messages.info(request, "This book was added to your wishlist.")
+            return redirect("book-detail", slug=slug)
+    else:
+        messages.info(request, "There was an error.")
+        return redirect("book-detail", slug=slug)
+
+
+def remove_from_wishlist(request, slug):
+    book = get_object_or_404(Book, slug=slug)
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
+    if order_qs.exists():
+        order = order_qs[0]
+        if order.items.filter(book__slug=book.slug).exists():
+            order_book = OrderBook.objects.filter(
+                book=book,
+                user=request.user,
+                ordered=False
+            )[0]
+            if order_book.quantity > 1:
+                order_book.delete()
+            else:
+                order_book.delete()
+            messages.info(request, "This book was removed from your cart.")
+            return redirect("book-detail", slug=slug)
+        else:
+            messages.info(request, "This book was not in your cart.")
+            return redirect("book-detail", slug=slug)
+
+    else:
+        messages.info(request, "You do not have an active order.")
+        return redirect("book-detail", slug=slug)

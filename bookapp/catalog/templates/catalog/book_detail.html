@@ -1,18 +1,21 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
+
+<form action="{{book.get_add_to_wishlist_url}}" method="post">{% csrf_token %}
   <p><strong>Add to Wishlist: </strong>
   <select name="wish_value">
     <option value="">---------</option>
     {% for wish in user.wishlist_set.all %}
-    <option value="{{ wish.id }}"{% if wish.id in selected_ids %}selected{% endif %}>
+    <option value="{{ wish.id }}">
         {{ wish.name }}
     </option>
     {% endfor %}
   </select>
-  <a href="" value=wish_value> <button type="button">Save</button> </a>
+  <button type="submit">Save</button></a>
   <p></p>
-
+  </form>
+  
   <h1>Title: {{ book.title }}</h1>
   <p><strong>Description: </strong> {{ book.summary }}</p>
   <p><strong>Publishing Info: </strong>{{ book.publisher }}</p> 
@@ -23,12 +26,14 @@
   <p><strong>Cover: </strong><a href="{{book.model_pic.url}}">
   <img src="{{book.model_pic.url}}" width="240"></img></a></p>
   <p><strong>Average Rating: {{average.avge}} </strong></p>
-
   <p><strong><a href="{% url 'post_new' %}"> <button type="button">Create Customer Review</button> </a></strong></p>
+  
   <p><strong>Submitted Comments & Rating: </strong></p>
   {% for ratings in rating %}
   <li>{{ratings.user}}: {{ratings.review}} <p>Rating: {{ratings.rating}} stars</p></li>
   {% endfor %}
+
   <a href="{{book.get_add_to_cart_url}}"> <button type="button">Add to Cart</button> </a>
   <a href="{{book.get_remove_from_cart_url}}"> <button type="button">Remove from Cart</button> </a>
+
 {% endblock %}

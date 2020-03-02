@@ -29,4 +29,7 @@ urlpatterns = [
     path('remove-from-cart/<slug>',
          views.remove_from_cart, name='remove-from-cart'),
     path('post/new/', views.post_new, name='post_new'),
+    path('add-to-wishlist/<slug>', views.add_to_wishlist, name='add-to-wishlist'),
+    path('remove-from-wishlist/<slug>',
+         views.remove_from_wishlist, name='remove-from-wishlist'),
 ]
