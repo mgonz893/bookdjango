@@ -14,7 +14,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
 from .models import Book, Wishlist, Shopping_Cart, Order, OrderBook, BookRating, ShippingAddr, CreditCard
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from catalog.forms import RegistrationForm, EditProfileForm, ProfileForm, ReviewForm, ShippingAddressForm
+from catalog.forms import RegistrationForm, EditProfileForm, ProfileForm, ReviewForm, WishForm, ShippingAddressForm
 from django.contrib.auth.models import User
 import random
 
@@ -186,6 +186,22 @@ def editprofile(request):
             'profile_form': profile_form}
 
     return render(request, 'editprofile.html', args)
+
+
+def newwish(request):
+    if request.method == 'POST':
+        form = WishForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/catalog/wishlists.html')
+    else:
+        form = WishForm()
+        args = {
+            'form': form,
+            'user': request.user
+        }
+
+    return render(request, 'addwish.html', args)
 
 
 def shipaddr(request):

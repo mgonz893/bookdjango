@@ -7,7 +7,7 @@
     <h4>{{ wishlist.name }}</h4>
     <ul>
     {% for book in wishlist.books.all %}
-    <li>{{ book.title }}</li>
+    <li>{{ book.title }} <a href="{{book.get_add_to_cart_url}}"> <button type="button">Add to Cart</button> </a></li>
     {% endfor %}
     </form>
     </ul>
@@ -16,4 +16,5 @@
     <h1>Oops!</h1>
     <p>You are not <a href="{% url 'login' %}">logged in</a>.</p>
 {% endif %}
+<a href="newwish/">Add New Wishlist</a>
 {% endblock %}

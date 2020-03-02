@@ -84,3 +84,11 @@ class ReviewForm(forms.ModelForm):
             'rating',
             'review',
         }
+
+
+class WishForm(forms.ModelForm):
+    class Meta:
+        model = Wishlist
+        fields = {
+            'name',
+        }
