@@ -16,6 +16,8 @@
         <a href="{{orderbook.book.get_remove_from_cart_url}}"> <button type="button">Remove from Cart</button> </a>
       </li>
     {% endfor %}
+    <p></p>
+    <strong>Subtotal: ${{ subtotal.total }}</strong>
   </ul>
   {% else %}
     <p><strong>There are no books in your shopping cart.</strong></p>

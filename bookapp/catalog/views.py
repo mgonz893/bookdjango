@@ -1,7 +1,8 @@
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 import datetime
-from django.db.models import Q
+from django.db.models import Sum
+from django.db.models import FloatField, Q
 from django.utils import timezone
 from django.db.models.query import QuerySet
 from django.urls import reverse
@@ -141,8 +142,11 @@ def add_to_wishlist(request, slug):
 def shop_cart(request):
     user = request.user
     orders = OrderBook.objects.filter(user=user)
+    subtotal = OrderBook.objects.all().aggregate(
+        total=Sum('book__price'))
     args = {'user': request.user,
-            'shopping_cart': orders}
+            'shopping_cart': orders,
+            'subtotal': subtotal}
     return render(request, 'shopping_cart.html', args)
 
 
