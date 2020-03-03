@@ -296,7 +296,11 @@ def remove_from_cart(request, slug):
 
 def post_new(request):
     form = ReviewForm()
-    return render(request, 'createrev.html', {'form': form})
+    args = {
+        'form': form,
+        'user': request.user
+    }
+    return render(request, 'createrev.html', args)
 
 
 def add_to_wishlist(request, slug):
