@@ -13,8 +13,11 @@
         <p><img src={{orderbook.book.model_pic.url}} style="width: 100px; height: 100px" /></p>
         <p>Quantity: {{orderbook.quantity}}</p>
         <p>Price: {{ orderbook.quantity | multiply:orderbook.book.price }}</p>
+        <a href="{{orderbook.book.get_remove_from_cart_url}}"> <button type="button">Remove from Cart</button> </a>
       </li>
     {% endfor %}
+    <p></p>
+    <strong>Subtotal: ${{ subtotal.total }}</strong>
   </ul>
   {% else %}
     <p><strong>There are no books in your shopping cart.</strong></p>

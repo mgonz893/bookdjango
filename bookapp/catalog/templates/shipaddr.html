@@ -1,15 +1,29 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h2>Shipping Address</h2>
+  <h2>Shipping Information</h2>
+  <p><strong>Current Default Address: </strong><p></p>
+  <ul>
+  <li>
+    <strong>Address: </strong>{{user.userprofile.address}}<p></p>
+    <p><strong>City: </strong>{{user.userprofile.city}} </p>
+    <p><strong>State: </strong>{{user.userprofile.state}} </p>
+    <p><strong>Zip: </strong>{{user.userprofile.zipcode}}</strong> </p>  
+  </li>  
+  <p><a href="">Edit</a> <strong> | </strong> <a href="">Delete</a></p>
+  </ul>
+  
+  <p><strong>Alternate Shipping Information: </strong><p></p>
     {% for ship in ships %}
     <ul>
   <li>
-    <strong>Address: {{ship.address}}</strong><p></p>
-    <p><strong>City: {{ship.city}}</strong> </p>
-    <p><strong>State: {{ship.state}}</strong> </p>
-    <p><strong>Zip: {{ship.zip}}</strong> </p>  
-  </li>  
+    <strong>Address: </strong>{{ship.address}}<p></p>
+    <p><strong>City: </strong>{{ship.city}} </p>
+    <p><strong>State: </strong>{{ship.state}} </p>
+    <p><strong>Zip: </strong>{{ship.zipcode}}</strong> </p>  
+    <p><a href="">Edit</a> <strong> | </strong> <a href="">Delete</a> <strong> | </strong> <a href="">Set as default</a></p>
+  </li>
   </ul>
   {% endfor %}  
+  <p><a href= {% url 'addshippingaddr' %}><strong><button type="button">Add New</button> </strong></a><p></p
 {% endblock %}

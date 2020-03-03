@@ -3,15 +3,18 @@
 {% block content %}
 {% if user.is_authenticated %}
     <h1>Your Wishlists</h1>
-    <p>Books</p>
-    {% for wishlist in wishlists %}
-    <h3>{{ wishlist.name }}</h3>
+    {% for wishlist in wishlist%}
+    <h4>{{ wishlist.name }}</h4>
     <ul>
-    <li> {{wishlist.books}} </li>
+    {% for book in wishlist.books.all %}
+    <li>{{ book.title }} <a href="{{book.get_add_to_cart_url}}"> <button type="button">Add to Cart</button> </a></li>
+    {% endfor %}
+    </form>
     </ul>
     {% endfor %}
-{% else %}
+    {% else %}
     <h1>Oops!</h1>
     <p>You are not <a href="{% url 'login' %}">logged in</a>.</p>
 {% endif %}
+<a href="newwish/">Add New Wishlist</a>
 {% endblock %}

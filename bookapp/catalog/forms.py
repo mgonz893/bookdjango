@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import UserChangeForm
-from .models import UserProfile, BookRating
+from .models import UserProfile, BookRating, ShippingAddr, Wishlist
 
 
 class RegistrationForm(UserCreationForm):
@@ -60,6 +60,22 @@ class ProfileForm(forms.ModelForm):
         field_order = ['address', 'city', 'state', 'zipcode']
 
 
+class ShippingAddressForm(forms.ModelForm):
+    class Meta:
+        model = ShippingAddr
+        fields = {
+            'address',
+            'city',
+            'state',
+            'zipcode',
+        }
+        exclude = {
+            'username',
+        }
+
+        field_order = ['address', 'city', 'state', 'zipcode']
+
+
 class ReviewForm(forms.ModelForm):
     class Meta:
         model = BookRating
@@ -67,4 +83,12 @@ class ReviewForm(forms.ModelForm):
             'user',
             'rating',
             'review',
+        }
+
+
+class WishForm(forms.ModelForm):
+    class Meta:
+        model = Wishlist
+        fields = {
+            'name',
         }

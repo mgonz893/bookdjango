@@ -1,7 +1,8 @@
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 import datetime
-from django.db.models import Q
+from django.db.models import Sum
+from django.db.models import FloatField, Q
 from django.utils import timezone
 from django.db.models.query import QuerySet
 from django.urls import reverse
@@ -14,7 +15,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
 from .models import Book, Wishlist, Shopping_Cart, Order, OrderBook, BookRating, ShippingAddr, CreditCard
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from catalog.forms import RegistrationForm, EditProfileForm, ProfileForm, ReviewForm
+from catalog.forms import RegistrationForm, EditProfileForm, ProfileForm, ReviewForm, WishForm, ShippingAddressForm
 from django.contrib.auth.models import User
 import random
 
@@ -94,13 +95,12 @@ class SearchResultsView(generic.ListView):
 class WishlistsView(generic.ListView):
     model = Wishlist
     template_name = 'catalog/wishlists.html'
-    context_object_name = 'wishlists_list'
     queryset = Book.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
-            context['wishlists'] = Wishlist.objects.filter(
+            context['wishlist'] = Wishlist.objects.filter(
                 user=self.request.user)
         return context
 
@@ -128,14 +128,25 @@ class BookDetailView(generic.DetailView):
         context['rating'] = BookRating.objects.filter(book=self.get_object())
         context['average'] = BookRating.objects.filter(
             book=self.get_object()).aggregate(avge=Avg('rating'))
+        context['wishlists'] = Wishlist.objects.all()
         return context
+
+
+def add_to_wishlist(request, slug):
+    if request.method == 'POST':
+        form = Wishlist(request.POST)
+        if form.is_valid():
+            return redirect("book-detail", slug=slug)
 
 
 def shop_cart(request):
     user = request.user
     orders = OrderBook.objects.filter(user=user)
+    subtotal = OrderBook.objects.all().aggregate(
+        total=Sum('book__price'))
     args = {'user': request.user,
-            'shopping_cart': orders}
+            'shopping_cart': orders,
+            'subtotal': subtotal}
     return render(request, 'shopping_cart.html', args)
 
 
@@ -181,6 +192,22 @@ def editprofile(request):
     return render(request, 'editprofile.html', args)
 
 
+def newwish(request):
+    if request.method == 'POST':
+        form = WishForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/catalog/wishlists.html')
+    else:
+        form = WishForm()
+        args = {
+            'form': form,
+            'user': request.user
+        }
+
+    return render(request, 'addwish.html', args)
+
+
 def shipaddr(request):
     user = request.user.userprofile
     ships = ShippingAddr.objects.filter(username=user)
@@ -188,6 +215,21 @@ def shipaddr(request):
             'ships': ships
             }
     return render(request, 'shipaddr.html', args)
+
+
+def addshippingaddress(request):
+    if request.method == 'POST':
+        form = ShippingAddressForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/catalog/shipaddr')
+    else:
+        form = ShippingAddressForm()
+        args = {
+            'form': form
+        }
+
+    return render(request, 'addshippingaddr.html', args)
 
 
 def creditcards(request):
@@ -255,3 +297,50 @@ def remove_from_cart(request, slug):
 def post_new(request):
     form = ReviewForm()
     return render(request, 'createrev.html', {'form': form})
+
+
+def add_to_wishlist(request, slug):
+    wishvalue = request.POST['wish_value']
+    book = get_object_or_404(Book, slug=slug)
+
+    order_qs = Wishlist.objects.filter(id=wishvalue)
+    if order_qs.exists():
+        order = order_qs[0]
+        if order.books.filter(slug=book.slug).exists():
+            messages.info(request, "This book is already in wishlist.")
+            return redirect("book-detail", slug=slug)
+        else:
+            order.books.add(book)
+            messages.info(request, "This book was added to your wishlist.")
+            return redirect("book-detail", slug=slug)
+    else:
+        messages.info(request, "There was an error.")
+        return redirect("book-detail", slug=slug)
+
+
+def Wishlists(request):
+    model = Wishlist
+    queryset = Wishlist.objects.filter(user=request.user)
+    args = {'user': request.user,
+            'wishlist': queryset,
+            }
+    return render(request, 'catalog/wishlists.html', args)
+
+
+def remove_from_wishlist(request, slug):
+    wishvalue = request.POST['wish_value']
+    book = get_object_or_404(Book, slug=slug)
+
+    order_qs = Wishlist.objects.filter(id=wishvalue)
+    if order_qs.exists():
+        order = order_qs[0]
+        if order.books.filter(slug=book.slug).exists():
+            order.books.remove(book)
+            messages.info(request, "This book has been removed from wishlist.")
+            return redirect("book-detail", slug=slug)
+        else:
+            messages.info(request, "This book is not in your wishlist.")
+            return redirect("book-detail", slug=slug)
+    else:
+        messages.info(request, "There was an error.")
+        return redirect("book-detail", slug=slug)

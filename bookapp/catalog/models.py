@@ -20,6 +20,7 @@ class UserProfile(models.Model):
     city = models.CharField(max_length=25, default='')
     state = models.CharField(max_length=25, default='')
     zipcode = models.IntegerField(default=0)
+    wishlists = models.ManyToManyField('Wishlist')
 
     def __str__(self):
         """String for representing the Model object."""
@@ -117,6 +118,16 @@ class Book(models.Model):
 
     def get_remove_from_cart_url(self):
         return reverse('remove-from-cart', kwargs={
+            'slug': self.slug
+        })
+
+    def get_add_to_wishlist_url(self):
+        return reverse('add-to-wishlist', kwargs={
+            'slug': self.slug
+        })
+
+    def get_remove_from_wishlist_url(self):
+        return reverse('remove-from-wishlist', kwargs={
             'slug': self.slug
         })
 
