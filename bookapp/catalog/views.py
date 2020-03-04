@@ -295,11 +295,16 @@ def remove_from_cart(request, slug):
 
 
 def post_new(request):
-    form = ReviewForm()
-    args = {
-        'form': form,
-        'user': request.user
-    }
+    order_qs = Order.objects.filter(user=request.user, ordered=True)
+    if order_qs.exists():
+        form = ReviewForm()
+        args = {
+            'form': form,
+            'user': request.user
+        }
+    else:
+        messages.info(request, "You do not own this book!")
+        return render(request, 'search.html')
     return render(request, 'createrev.html', args)
 
 
