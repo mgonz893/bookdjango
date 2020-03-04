@@ -77,6 +77,7 @@ class ShippingAddressForm(forms.ModelForm):
 
 
 class ReviewForm(forms.ModelForm):
+
     class Meta:
         model = BookRating
         fields = {
@@ -84,6 +85,7 @@ class ReviewForm(forms.ModelForm):
             'rating',
             'review',
         }
+        field_order = ['user', 'rating', 'review']
 
 
 class WishForm(forms.ModelForm):
