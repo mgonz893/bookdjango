@@ -3,6 +3,7 @@
 {% block content %}
 
 <form action="{{book.get_add_to_wishlist_url}}" method="post">{% csrf_token %}
+{% if user.is_authenticated %}
   <p><strong>Add to Wishlist: </strong>
   <select name="wish_value">
     <option value="">---------</option>
@@ -15,7 +16,7 @@
   <button type="submit">Save</button></a>
   <p></p>
   </form>
-  
+  {% endif %}
   <h1>Title: {{ book.title }}</h1>
   <p><strong>Description: </strong> {{ book.summary }}</p>
   <p><strong>Publishing Info: </strong>{{ book.publisher }}</p> 
@@ -26,14 +27,15 @@
   <p><strong>Cover: </strong><a href="{{book.model_pic.url}}">
   <img src="{{book.model_pic.url}}" width="240"></img></a></p>
   <p><strong>Average Rating: {{average.avge}} </strong></p>
+  {% if user.is_authenticated %}
   <p><strong><a href="{% url 'post_new' %}"> <button type="button">Create Customer Review</button> </a></strong></p>
-  
+  {% endif %}
   <p><strong>Submitted Comments & Rating: </strong></p>
   {% for ratings in rating %}
   <li>{{ratings.user}}: {{ratings.review}} <p>Rating: {{ratings.rating}} stars</p></li>
   {% endfor %}
-
+  {% if user.is_authenticated %}
   <a href="{{book.get_add_to_cart_url}}"> <button type="button">Add to Cart</button> </a>
   <a href="{{book.get_remove_from_cart_url}}"> <button type="button">Remove from Cart</button> </a>
-
+  {% endif %}
 {% endblock %}
