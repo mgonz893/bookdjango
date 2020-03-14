@@ -196,8 +196,10 @@ def newwish(request):
     if request.method == 'POST':
         form = WishForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('/catalog/wishlists.html')
+            wishlist = form.save(commit=False)
+            wishlist.user = request.user
+            wishlist.save()
+            return redirect('wishlists')
     else:
         form = WishForm()
         args = {
