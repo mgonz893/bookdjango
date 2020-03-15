@@ -15,7 +15,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
 from .models import Book, Wishlist, Shopping_Cart, Order, OrderBook, BookRating, ShippingAddr, CreditCard, Saved_for_later
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from catalog.forms import RegistrationForm, EditProfileForm, ProfileForm, ReviewForm, WishForm, ShippingAddressForm
+from catalog.forms import RegistrationForm, EditProfileForm, ProfileForm, ReviewForm, WishForm, ShippingAddressForm, CreditCardForm
 from django.contrib.auth.models import User
 import random
 
@@ -281,6 +281,21 @@ def creditcards(request):
             }
     return render(request, 'creditcards.html', args)
 
+def addcreditcard(request):
+    if request.method == 'POST':
+        form = CreditCardForm(request.POST)
+        if form.is_valid():
+            newcard = form.save(commit=False)
+            newcard.username = request.user.userprofile
+            newcard.save()
+            return redirect('/catalog/creditcards')
+    else:
+        form = CreditCardForm()
+        args = {
+            'form': form,
+            'username': request.user.userprofile
+        }
+    return render(request, 'addcreditcard.html', args)
 
 def add_to_cart(request, slug):
     book = get_object_or_404(Book, slug=slug)

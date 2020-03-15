@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import UserChangeForm
-from .models import UserProfile, BookRating, ShippingAddr, Wishlist
+from .models import UserProfile, BookRating, ShippingAddr, Wishlist, CreditCard
 
 
 class RegistrationForm(UserCreationForm):
@@ -72,9 +72,20 @@ class ShippingAddressForm(forms.ModelForm):
         exclude = {
             'username',
         }
-
         field_order = ['address', 'city', 'state', 'zipcode']
 
+class CreditCardForm(forms.ModelForm):
+    class Meta:
+        model = CreditCard
+        fields = {
+            'ccnumber',
+            'ccv',
+            'expiration',
+        }
+        exclude = {
+            'username',
+        }
+        field_order = ['ccnumber', 'ccv','expiration']
 
 class ReviewForm(forms.ModelForm):
 

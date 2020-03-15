@@ -28,6 +28,7 @@ urlpatterns = [
     path('shipaddr/editshipaddr/<str:pk>/', views.editshippingaddress, name='editshippingaddr'),
     path('shipaddr/deleteshipaddr/<str:pk>/', views.deleteshippingaddress, name='deleteshippingaddr'),
     path('creditcards/', views.creditcards, name='creditcards'),
+    path('creditcards/addcreditcard/', views.addcreditcard, name='addcreditcard'),
     path('remove-from-cart/<slug>',
          views.remove_from_cart, name='remove-from-cart'),
      path('remove-book-from-cart/<slug>',
