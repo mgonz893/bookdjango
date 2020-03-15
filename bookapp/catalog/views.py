@@ -110,6 +110,7 @@ class ShoppingCart(generic.ListView):
     paginate_by = 10
     ordering = ['title', 'author', 'price']
 
+
 class SavedForLater(generic.ListView):
     model = Saved_for_later
     paginate_by = 10
@@ -147,7 +148,7 @@ def add_to_wishlist(request, slug):
 def shop_cart(request):
     user = request.user
     orders = OrderBook.objects.filter(user=user)
-    subtotal = OrderBook.objects.all().aggregate(
+    subtotal = OrderBook.objects.filter(user=user).aggregate(
         total=Sum('book__price'))
     args = {'user': request.user,
             'shopping_cart': orders,
@@ -308,6 +309,7 @@ def remove_from_cart(request, slug):
     else:
         messages.info(request, "You do not have an active order.")
         return redirect("book-detail", slug=slug)
+
 
 def remove_single_book_from_cart(request, slug):
     book = get_object_or_404(Book, slug=slug)
