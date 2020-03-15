@@ -132,7 +132,7 @@ class Book(models.Model):
         })
 
     def get_add_to_save_for_later_url(self):
-        return reverse('save-for-later', kwargs={
+        return reverse('add-to-save-for-later', kwargs={
             'slug': self.slug
         })
 
@@ -232,7 +232,7 @@ class Saved_for_later(models.Model):
     summary = models.TextField(
         max_length=1000, help_text='Enter a brief description of the book')
     subtotal = models.FloatField(default='9.99')
-    name = models.CharField(max_length=100, default='Shopping Cart')
+    name = models.CharField(max_length=100, default='Saved For Later')
 
     def __str__(self):
         return self.name
