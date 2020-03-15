@@ -234,12 +234,15 @@ def addshippingaddress(request):
     if request.method == 'POST':
         form = ShippingAddressForm(request.POST)
         if form.is_valid():
-            form.save()
+            newaddress = form.save(commit=False)
+            newaddress.username = request.user.userprofile
+            newaddress.save()
             return redirect('/catalog/shipaddr')
     else:
         form = ShippingAddressForm()
         args = {
-            'form': form
+            'form': form,
+            'username': request.user.userprofile
         }
 
     return render(request, 'addshippingaddr.html', args)
