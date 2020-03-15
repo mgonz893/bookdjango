@@ -242,6 +242,21 @@ def addshippingaddress(request):
 
     return render(request, 'addshippingaddr.html', args)
 
+def editshippingaddress(request, pk):
+
+    address = ShippingAddr.objects.get(id=pk)
+    form = ShippingAddressForm(instance=address)
+
+    if request.method == 'POST':
+        form = ShippingAddressForm(request.POST, instance=address)
+        if form.is_valid():
+            form.save()
+            return redirect('/catalog/shipaddr')
+    args = {
+        'form': form
+    }
+    return render(request, 'addshippingaddr.html', args)
+
 
 def creditcards(request):
     user = request.user.userprofile

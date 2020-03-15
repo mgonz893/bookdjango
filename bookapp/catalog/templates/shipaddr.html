@@ -21,7 +21,7 @@
     <p><strong>City: </strong>{{ship.city}} </p>
     <p><strong>State: </strong>{{ship.state}} </p>
     <p><strong>Zip: </strong>{{ship.zipcode}}</strong> </p>  
-    <p><a href="">Edit</a> <strong> | </strong> <a href="">Delete</a> <strong> | </strong> <a href="">Set as default</a></p>
+    <p><a href= {% url 'editshippingaddr' ship.id %}>Edit</a> <strong> | </strong> <a href="">Delete</a> <strong> | </strong> <a href="">Set as default</a></p>
   </li>
   </ul>
   {% endfor %}  
