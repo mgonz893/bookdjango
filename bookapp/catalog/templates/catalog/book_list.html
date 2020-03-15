@@ -9,6 +9,12 @@
   <option value="rating">Rating</option>
   <option value="date">Date</option>
   </select>
+
+  <form method="get" action="{% url 'books' %}">
+  <p>order_by: <input type="text" value=orderby name="orderby"/></p>
+  <p><input type="submit" name="submit" value="submit"/></p>
+  </form>
+
   {% if book_list %}
   <ul>
     {% for book in book_list %}
