@@ -272,6 +272,26 @@ def deleteshippingaddress(request, pk):
     args = { 'item': address}
     return render (request, 'deleteshippingaddr.html', args)
 
+def setdefaultaddress(request, pk):
+    newdefault = ShippingAddr.objects.get(id=pk)
+    currentdefault = UserProfile.objects.get(user = request.user)
+    currenttemp = UserProfile.objects.get(user = request.user)
+    if request.method == 'POST':
+        currentdefault.address = newdefault.address
+        currentdefault.state = newdefault.state
+        currentdefault.zipcode = newdefault.zipcode
+        currentdefault.city = newdefault.city
+        currentdefault.save()
+        newdefault.address = currenttemp.address
+        newdefault.state = currenttemp.state
+        newdefault.zipcode = currenttemp.zipcode
+        newdefault.city = currenttemp.city
+        newdefault.save()
+        return redirect('/catalog/shipaddr')
+    
+    args = {'item': newdefault}
+    return render (request, 'newdefaultshippingaddr.html', args)
+
 
 def creditcards(request):
     user = request.user.userprofile
