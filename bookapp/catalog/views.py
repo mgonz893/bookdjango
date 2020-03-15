@@ -1,7 +1,7 @@
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 import datetime
-from django.db.models import Sum
+from django.db.models import Sum, ExpressionWrapper
 from django.db.models import FloatField, Q
 from django.utils import timezone
 from django.db.models.query import QuerySet
