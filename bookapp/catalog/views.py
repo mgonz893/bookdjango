@@ -193,11 +193,19 @@ def editprofile(request):
 
 
 def newwish(request):
+    # Restricts maximum number of wishlists to three
+    wl = Wishlist.objects.filter(user=request.user)
+    if len(wl) >= 3:
+        messages.info(request, "You may only have 3 wishlists at a time.")
+        return redirect('wishlists')
+
     if request.method == 'POST':
         form = WishForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('/catalog/wishlists.html')
+            wishlist = form.save(commit=False)
+            wishlist.user = request.user
+            wishlist.save()
+            return redirect('wishlists')
     else:
         form = WishForm()
         args = {

@@ -3,6 +3,7 @@ import uuid  # Required for unique book instances
 from django.urls import reverse
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
 from datetime import date
 from django.db.models.signals import post_save

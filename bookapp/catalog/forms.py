@@ -94,3 +94,6 @@ class WishForm(forms.ModelForm):
         fields = {
             'name',
         }
+        exclude = {
+            'user',
+        }
