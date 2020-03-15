@@ -122,6 +122,11 @@ class Book(models.Model):
             'slug': self.slug
         })
 
+    def get_remove_single_book_from_cart_url(self):
+        return reverse('remove-single-book-from-cart', kwargs={
+            'slug': self.slug
+        })
+
     def get_add_to_wishlist_url(self):
         return reverse('add-to-wishlist', kwargs={
             'slug': self.slug

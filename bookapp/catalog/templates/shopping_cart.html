@@ -11,17 +11,36 @@
       <li>
         <a href="{{ orderbook.book.get_absolute_url }}">{{ orderbook.book.title }}</a> ({{orderbook.book.author}}) <strong>${{orderbook.get_total_book_price}}</strong>
         <p><img src={{orderbook.book.model_pic.url}} style="width: 100px; height: 100px" /></p>
-        <p>Quantity: {{orderbook.quantity}}</p>
-        <p>Price: {{ orderbook.quantity | multiply:orderbook.book.price }}</p>
+        <p>Quantity: <a href="{{orderbook.book.get_remove_single_book_from_cart_url}}"><button type="button">-</button></i></a> 
+          {{orderbook.quantity}} 
+          <a href="{{orderbook.book.get_add_to_cart_url}}"><button type="button">+</button></a>
+        <p>Price: ${{ orderbook.quantity | multiply:orderbook.book.price }}</p>
         <a href="{{orderbook.book.get_remove_from_cart_url}}"> <button type="button">Remove from Cart</button> </a>
         <a href="{{orderbook.book.get_add_to_save_for_later_url}}"> <button type="button">Save for Later</button> </a>
+        <p></p>
       </li>
     {% endfor %}
     <p></p>
-    <strong>Subtotal: ${{ object.get_total }}</strong>
+    <strong>Subtotal: ${{ subtotal.total }}</strong>
   </ul>
 
   <h3>Saved For Later</h3>
+  {% if saved_for_later %}
+  <ul>
+    {% for orderbook in saved_for_later %}
+    {% load test %}
+      <li>
+        <a href="{{ orderbook.book.get_absolute_url }}">{{ orderbook.book.title }}</a> ({{orderbook.book.author}}) <strong>${{orderbook.get_total_book_price}}</strong>
+        <p><img src={{orderbook.book.model_pic.url}} style="width: 100px; height: 100px" /></p>
+        <p>Quantity: {{orderbook.quantity}}</p>
+        <p>Price: ${{ orderbook.quantity | multiply:orderbook.book.price }}</p>
+      </li>
+    {% endfor %}
+
+    {% else %}
+    <p><strong>There are no books saved for later.</strong></p>
+    {% endif %}
+
   {% else %}
     <p><strong>There are no books in your shopping cart.</strong></p>
   {% endif %}     
