@@ -353,3 +353,41 @@ def remove_from_wishlist(request, slug):
     else:
         messages.info(request, "There was an error.")
         return redirect("book-detail", slug=slug)
+
+
+def save_for_later(request):
+    user = request.user
+    orders = OrderBook.objects.filter(user=user)
+    subtotal = OrderBook.objects.all().aggregate(
+        total=Sum('book__price'))
+    args = {'user': request.user,
+            'save_for_later': orders,
+            'subtotal': subtotal}
+    return render(request, 'shopping_cart.html', args)
+
+
+def add_save_for_later(request, slug):
+    book = get_object_or_404(Book, slug=slug)
+    order_book, created = OrderBook.objects.get_or_create(
+        book=book,
+        user=request.user,
+        ordered=False)
+    order_qs = Order.objects.filter(user=request.user, ordered=False)
+    if order_qs.exists():
+        order = order_qs[0]
+        if order.items.filter(book__slug=book.slug).exists():
+            order_book.quantity += 1
+            order_book.save()
+            messages.info(request, "This book quantity was updated.")
+            return redirect("book-detail", slug=slug)
+        else:
+            order.items.add(order_book)
+            messages.info(request, "This book was added to your cart.")
+            return redirect("book-detail", slug=slug)
+    else:
+        ordered_date = timezone.now()
+        order = Order.objects.create(
+            user=request.user, ordered_date=ordered_date)
+        order.items.add(order_book)
+        messages.info(request, "This book was added to your cart.")
+        return redirect("book-detail", slug=slug)

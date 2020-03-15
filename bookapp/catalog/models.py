@@ -131,6 +131,11 @@ class Book(models.Model):
             'slug': self.slug
         })
 
+    def get_add_to_save_for_later_url(self):
+        return reverse('save-for-later', kwargs={
+            'slug': self.slug
+        })
+
 
 class OrderBook(models.Model):
     user = models.ForeignKey(
@@ -141,6 +146,9 @@ class OrderBook(models.Model):
 
     def __str__(self):
         return f'{self.book} - Qty: {self.quantity}'
+
+    def get_total_book_price(self):
+        return self.quantity * self.book.price
 
 
 class Order(models.Model):
@@ -153,6 +161,13 @@ class Order(models.Model):
 
     def __str__(self):
         return f'{self.user} - {self.items}'
+
+    def get_total(self):
+        total = 0
+        for order_book in self.items.all():
+            total += order_book.get_total_book_price()
+        return total
+
 
 
 class BookRating(models.Model):
@@ -197,6 +212,19 @@ class Wishlist(models.Model):
 
 class Shopping_Cart(models.Model):
     # Shopping Cart Model
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    books = models.ManyToManyField(Book)
+    quantity = models.IntegerField(default="1")
+    summary = models.TextField(
+        max_length=1000, help_text='Enter a brief description of the book')
+    subtotal = models.FloatField(default='9.99')
+    name = models.CharField(max_length=100, default='Shopping Cart')
+
+    def __str__(self):
+        return self.name
+
+class Saved_for_later(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     books = models.ManyToManyField(Book)
