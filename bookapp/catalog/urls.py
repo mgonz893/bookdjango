@@ -26,6 +26,7 @@ urlpatterns = [
     path('shipaddr/', views.shipaddr, name='shipaddr'),
     path('shipaddr/addshipaddr/', views.addshippingaddress, name='addshippingaddr'),
     path('shipaddr/editshipaddr/<str:pk>/', views.editshippingaddress, name='editshippingaddr'),
+    path('shipaddr/deleteshipaddr/<str:pk>/', views.deleteshippingaddress, name='deleteshippingaddr'),
     path('creditcards/', views.creditcards, name='creditcards'),
     path('remove-from-cart/<slug>',
          views.remove_from_cart, name='remove-from-cart'),

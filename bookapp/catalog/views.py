@@ -263,6 +263,15 @@ def editshippingaddress(request, pk):
     }
     return render(request, 'addshippingaddr.html', args)
 
+def deleteshippingaddress(request, pk):
+    address = ShippingAddr.objects.get(id=pk)
+    if request.method == 'POST':
+        address.delete()
+        return redirect('/catalog/shipaddr')
+
+    args = { 'item': address}
+    return render (request, 'deleteshippingaddr.html', args)
+
 
 def creditcards(request):
     user = request.user.userprofile
