@@ -28,6 +28,8 @@ urlpatterns = [
     path('creditcards/', views.creditcards, name='creditcards'),
     path('remove-from-cart/<slug>',
          views.remove_from_cart, name='remove-from-cart'),
+     path('remove-book-from-cart/<slug>',
+         views.remove_single_book_from_cart, name='remove-single-book-from-cart'),
     path('post/new', views.post_new, name='post_new'),
     path('add-to-wishlist/<slug>', views.add_to_wishlist, name='add-to-wishlist'),
     path('remove-from-wishlist/<slug>',
