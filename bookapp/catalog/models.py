@@ -156,6 +156,8 @@ class OrderBook(models.Model):
     def get_total_book_price(self):
         return self.quantity * self.book.price
 
+    #book_total_price = models.FloatField(default=get_total_book_price(book))
+
 
 class Order(models.Model):
     user = models.ForeignKey(
