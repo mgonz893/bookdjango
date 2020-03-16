@@ -44,7 +44,7 @@ class CreditCard(models.Model):
     ccv = models.PositiveIntegerField(
         default=0, validators=[MaxValueValidator(999)])
     expiration = models.DateField(
-        help_text="(MM/YY)", null=True, auto_now_add=False, auto_now=False, blank=True)
+        help_text="(YYYY-MM-DD)", null=True, auto_now_add=False, auto_now=False, blank=True)
 
     def __str__(self):
         return f'{self.username} - {self.ccnumber}'
@@ -155,6 +155,8 @@ class OrderBook(models.Model):
 
     def get_total_book_price(self):
         return self.quantity * self.book.price
+
+    #book_total_price = models.FloatField(default=get_total_book_price(book))
 
 
 class Order(models.Model):

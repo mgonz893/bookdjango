@@ -9,8 +9,7 @@
     <p><strong>City: </strong>{{user.userprofile.city}} </p>
     <p><strong>State: </strong>{{user.userprofile.state}} </p>
     <p><strong>Zip: </strong>{{user.userprofile.zipcode}}</strong> </p>  
-  </li>  
-  <p><a href="">Edit</a> <strong> | </strong> <a href="">Delete</a></p>
+  </li> 
   </ul>
   
   <p><strong>Alternate Shipping Information: </strong><p></p>
@@ -21,7 +20,7 @@
     <p><strong>City: </strong>{{ship.city}} </p>
     <p><strong>State: </strong>{{ship.state}} </p>
     <p><strong>Zip: </strong>{{ship.zipcode}}</strong> </p>  
-    <p><a href= {% url 'editshippingaddr' ship.id %}>Edit</a> <strong> | </strong> <a href= {% url 'deleteshippingaddr' ship.id %}>Delete</a> <strong> | </strong> <a href="">Set as default</a></p>
+    <p><a href= {% url 'editshippingaddr' ship.id %}>Edit</a> <strong> | </strong> <a href= {% url 'deleteshippingaddr' ship.id %}>Delete</a> <strong> | </strong> <a href={% url 'setdefaultaddr' ship.id %}>Set as default</a></p>
   </li>
   </ul>
   {% endfor %}  
