@@ -1,7 +1,7 @@
 from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 import datetime
-from django.db.models import Sum
+from django.db.models import Sum, ExpressionWrapper
 from django.db.models import FloatField, Q
 from django.utils import timezone
 from django.db.models.query import QuerySet
@@ -15,7 +15,7 @@ from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
 from .models import Book, Wishlist, Shopping_Cart, Order, OrderBook, BookRating, ShippingAddr, CreditCard, Saved_for_later
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from catalog.forms import RegistrationForm, EditProfileForm, ProfileForm, ReviewForm, WishForm, ShippingAddressForm
+from catalog.forms import RegistrationForm, EditProfileForm, ProfileForm, ReviewForm, WishForm, ShippingAddressForm, CreditCardForm
 from django.contrib.auth.models import User
 import random
 
@@ -110,6 +110,7 @@ class ShoppingCart(generic.ListView):
     paginate_by = 10
     ordering = ['title', 'author', 'price']
 
+
 class SavedForLater(generic.ListView):
     model = Saved_for_later
     paginate_by = 10
@@ -147,7 +148,7 @@ def add_to_wishlist(request, slug):
 def shop_cart(request):
     user = request.user
     orders = OrderBook.objects.filter(user=user)
-    subtotal = OrderBook.objects.all().aggregate(
+    subtotal = OrderBook.objects.filter(user=user).aggregate(
         total=Sum('book__price'))
     args = {'user': request.user,
             'shopping_cart': orders,
@@ -247,6 +248,50 @@ def addshippingaddress(request):
 
     return render(request, 'addshippingaddr.html', args)
 
+def editshippingaddress(request, pk):
+
+    address = ShippingAddr.objects.get(id=pk)
+    form = ShippingAddressForm(instance=address)
+
+    if request.method == 'POST':
+        form = ShippingAddressForm(request.POST, instance=address)
+        if form.is_valid():
+            form.save()
+            return redirect('/catalog/shipaddr')
+    args = {
+        'form': form
+    }
+    return render(request, 'addshippingaddr.html', args)
+
+def deleteshippingaddress(request, pk):
+    address = ShippingAddr.objects.get(id=pk)
+    if request.method == 'POST':
+        address.delete()
+        return redirect('/catalog/shipaddr')
+
+    args = { 'item': address}
+    return render (request, 'deleteshippingaddr.html', args)
+
+def setdefaultaddress(request, pk):
+    newdefault = ShippingAddr.objects.get(id=pk)
+    currentdefault = UserProfile.objects.get(user = request.user)
+    currenttemp = UserProfile.objects.get(user = request.user)
+    if request.method == 'POST':
+        currentdefault.address = newdefault.address
+        currentdefault.state = newdefault.state
+        currentdefault.zipcode = newdefault.zipcode
+        currentdefault.city = newdefault.city
+        currentdefault.save()
+        newdefault.address = currenttemp.address
+        newdefault.state = currenttemp.state
+        newdefault.zipcode = currenttemp.zipcode
+        newdefault.city = currenttemp.city
+        newdefault.save()
+        return redirect('/catalog/shipaddr')
+    
+    args = {'item': newdefault}
+    return render (request, 'newdefaultshippingaddr.html', args)
+
 
 def creditcards(request):
     user = request.user.userprofile
@@ -256,6 +301,21 @@ def creditcards(request):
             }
     return render(request, 'creditcards.html', args)
 
+def addcreditcard(request):
+    if request.method == 'POST':
+        form = CreditCardForm(request.POST)
+        if form.is_valid():
+            newcard = form.save(commit=False)
+            newcard.username = request.user.userprofile
+            newcard.save()
+            return redirect('/catalog/creditcards')
+    else:
+        form = CreditCardForm()
+        args = {
+            'form': form,
+            'username': request.user.userprofile
+        }
+    return render(request, 'addcreditcard.html', args)
 
 def add_to_cart(request, slug):
     book = get_object_or_404(Book, slug=slug)
@@ -308,6 +368,7 @@ def remove_from_cart(request, slug):
     else:
         messages.info(request, "You do not have an active order.")
         return redirect("book-detail", slug=slug)
+
 
 def remove_single_book_from_cart(request, slug):
     book = get_object_or_404(Book, slug=slug)

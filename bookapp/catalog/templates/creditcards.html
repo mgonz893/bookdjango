@@ -9,8 +9,7 @@
     <p><strong>CVV: </strong>{{card.ccv}} </p>  
      <p><strong>Expiration date: </strong>{{card.expiration|date:"M/Y"}} </p>  
   </li>  
-   <p><a href="">Manage Credit Card Information</a></p>
   </ul>
   {% endfor %}  
-  
+  <p><a href= {% url 'addcreditcard' %}><strong><button type="button">Add New Card</button> </strong></a><p></p
 {% endblock %}
