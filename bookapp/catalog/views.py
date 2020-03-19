@@ -158,11 +158,13 @@ def add_to_wishlist(request, slug):
 def shop_cart(request):
     user = request.user
     orders = OrderBook.objects.filter(user=user)
+    savebooks = SaveBook.objects.filter(user=user)
     subtotal = OrderBook.objects.filter(user=user).aggregate(
         total=Sum('book__price'))  # OrderBook.get_total_book_price))
     args = {'user': request.user,
             'shopping_cart': orders,
-            'subtotal': subtotal}
+            'subtotal': subtotal,
+            'saved_for_later': savebooks}
     return render(request, 'shopping_cart.html', args)
 
 
