@@ -124,6 +124,16 @@ class BookListView(generic.ListView):
     class Meta:
         ordering = ['genre', 'title', 'price']
 
+    def get_queryset(self):
+        order = self.request.GET.get('orderby', 'give-default-value')
+        new_context = Book.objects.filter().order_by(order)
+        return new_context
+
+    def get_context_data(self, **kwargs):
+        context = super(BookListView, self).get_context_data(**kwargs)
+        context['orderby'] = self.request.GET.get('orderby', 'give-default-value')
+        return context
+
 
 class BookDetailView(generic.DetailView):
     model = Book
