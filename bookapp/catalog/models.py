@@ -174,6 +174,7 @@ class Order(models.Model):
             total += order_book.get_total_book_price(self)
         return total
 
+
 class SaveBook(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True)
@@ -184,17 +185,17 @@ class SaveBook(models.Model):
     def __str__(self):
         return f'{self.book} - Qty: {self.quantity}'
 
+
 class Save(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.SET_NULL, null=True)
     start_date = models.DateTimeField(auto_now_add=True)
     saved_date = models.DateTimeField()
     saved = models.BooleanField(default=False)
-    items = models.ManyToManyField(OrderBook)
+    items = models.ManyToManyField(SaveBook)
 
     def __str__(self):
         return f'{self.user} - {self.items}'
-
 
 
 class BookRating(models.Model):
@@ -250,6 +251,7 @@ class Shopping_Cart(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Saved_for_later(models.Model):
 

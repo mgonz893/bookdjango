@@ -125,13 +125,13 @@ class BookListView(generic.ListView):
         ordering = ['genre', 'title', 'price']
 
     def get_queryset(self):
-        order = self.request.GET.get('orderby', 'give-default-value')
+        order = self.request.GET.get('orderby', 'genre')
         new_context = Book.objects.filter().order_by(order)
         return new_context
 
     def get_context_data(self, **kwargs):
         context = super(BookListView, self).get_context_data(**kwargs)
-        context['orderby'] = self.request.GET.get('orderby', 'give-default-value')
+        context['orderby'] = self.request.GET.get('orderby', 'genre')
         return context
 
 
@@ -159,7 +159,7 @@ def shop_cart(request):
     user = request.user
     orders = OrderBook.objects.filter(user=user)
     subtotal = OrderBook.objects.filter(user=user).aggregate(
-        total=Sum('book__price'))#OrderBook.get_total_book_price))
+        total=Sum('book__price'))  # OrderBook.get_total_book_price))
     args = {'user': request.user,
             'shopping_cart': orders,
             'subtotal': subtotal}
@@ -258,6 +258,7 @@ def addshippingaddress(request):
 
     return render(request, 'addshippingaddr.html', args)
 
+
 def editshippingaddress(request, pk):
 
     address = ShippingAddr.objects.get(id=pk)
@@ -273,19 +274,21 @@ def editshippingaddress(request, pk):
     }
     return render(request, 'addshippingaddr.html', args)
 
+
 def deleteshippingaddress(request, pk):
     address = ShippingAddr.objects.get(id=pk)
     if request.method == 'POST':
         address.delete()
         return redirect('/catalog/shipaddr')
 
-    args = { 'item': address}
-    return render (request, 'deleteshippingaddr.html', args)
+    args = {'item': address}
+    return render(request, 'deleteshippingaddr.html', args)
+
 
 def setdefaultaddress(request, pk):
     newdefault = ShippingAddr.objects.get(id=pk)
-    currentdefault = UserProfile.objects.get(user = request.user)
-    currenttemp = UserProfile.objects.get(user = request.user)
+    currentdefault = UserProfile.objects.get(user=request.user)
+    currenttemp = UserProfile.objects.get(user=request.user)
     if request.method == 'POST':
         currentdefault.address = newdefault.address
         currentdefault.state = newdefault.state
@@ -298,9 +301,9 @@ def setdefaultaddress(request, pk):
         newdefault.city = currenttemp.city
         newdefault.save()
         return redirect('/catalog/shipaddr')
-    
+
     args = {'item': newdefault}
-    return render (request, 'newdefaultshippingaddr.html', args)
+    return render(request, 'newdefaultshippingaddr.html', args)
 
 
 def creditcards(request):
@@ -310,6 +313,7 @@ def creditcards(request):
             'cards': cards
             }
     return render(request, 'creditcards.html', args)
+
 
 def addcreditcard(request):
     if request.method == 'POST':
@@ -326,6 +330,7 @@ def addcreditcard(request):
             'username': request.user.userprofile
         }
     return render(request, 'addcreditcard.html', args)
+
 
 def add_to_cart(request, slug):
     book = get_object_or_404(Book, slug=slug)
