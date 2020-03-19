@@ -13,7 +13,7 @@ from django.contrib.auth.decorators import permission_required
 from django.views import generic
 from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
-from .models import Book, Wishlist, Shopping_Cart, Order, OrderBook, BookRating, ShippingAddr, CreditCard, Saved_for_later
+from .models import Book, Wishlist, Shopping_Cart, Order, OrderBook, BookRating, ShippingAddr, CreditCard, Saved_for_later, Save, SaveBook
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from catalog.forms import RegistrationForm, EditProfileForm, ProfileForm, ReviewForm, WishForm, ShippingAddressForm, CreditCardForm
 from django.contrib.auth.models import User
@@ -471,31 +471,37 @@ def remove_from_wishlist(request, slug):
 
 def save_for_later(request):
     user = request.user
-    orders = OrderBook.objects.filter(user=user)
-    subtotal = OrderBook.objects.all().aggregate(
+    saves = SaveBook.objects.filter(user=user)
+    subtotal = SaveBook.objects.all().aggregate(
         total=Sum('book__price'))
     args = {'user': request.user,
-            'save_for_later': orders,
-            'subtotal': subtotal}
+            'save_for_later': saves
+            }
     return render(request, 'shopping_cart.html', args)
 
 
 def add_save_for_later(request, slug):
     book = get_object_or_404(Book, slug=slug)
-    order_book, created = OrderBook.objects.get_or_create(
+    save_book, created = SaveBook.objects.get_or_create(
         book=book,
         user=request.user,
-        ordered=False)
-    order_qs = Order.objects.filter(user=request.user, ordered=False)
-    if order_qs.exists():
-        order = order_qs[0]
-        order.items.add(order_book)
-        messages.info(request, "This book was saved for later.")
-        return redirect("shoppingcart", slug=slug)
+        saved=False)
+    save_qs = Save.objects.filter(user=request.user, saved=False)
+    if save_qs.exists():
+        save = save_qs[0]
+        if save.items.filter(book__slug=book.slug).exists():
+            save_book.quantity += 1
+            save_book.save()
+            messages.info(request, "This book quantity was updated.")
+            return redirect("book-detail", slug=slug)
+        else:
+            save.items.add(save_book)
+            messages.info(request, "This book was saved for later.")
+            return redirect("book-detail", slug=slug)
     else:
-        ordered_date = timezone.now()
-        order = Order.objects.create(
-            user=request.user, ordered_date=ordered_date)
-        order.items.add(order_book)
+        saved_date = timezone.now()
+        save = Save.objects.create(
+            user=request.user, saved_date=saved_date)
+        save.items.add(save_book)
         messages.info(request, "This book was added to your cart.")
         return redirect("book-detail", slug=slug)

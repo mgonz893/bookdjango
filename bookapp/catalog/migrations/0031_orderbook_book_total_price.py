@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='orderbook',
             name='book_total_price',
-            field=models.FloatField(default=catalog.models.OrderBook.get_total_book_price),
+            field=models.FloatField(default=9.99),
         ),
     ]

@@ -30,10 +30,10 @@
     {% for orderbook in saved_for_later %}
     {% load test %}
       <li>
-        <a href="{{ orderbook.book.get_absolute_url }}">{{ orderbook.book.title }}</a> ({{orderbook.book.author}}) <strong>${{orderbook.get_total_book_price}}</strong>
-        <p><img src={{orderbook.book.model_pic.url}} style="width: 100px; height: 100px" /></p>
-        <p>Quantity: {{orderbook.quantity}}</p>
-        <p>Price: ${{ orderbook.quantity | multiply:orderbook.book.price }}</p>
+        <a href="{{ savebook.book.get_absolute_url }}">{{ savebook.book.title }}</a> ({{savebook.book.author}})
+        <p><img src={{savebook.book.model_pic.url}} style="width: 100px; height: 100px" /></p>
+        <p>Quantity: {{savebook.quantity}}</p>
+        <p>Price: ${{ savebook.quantity | multiply:savebook.book.price }}</p>
       </li>
     {% endfor %}
 
