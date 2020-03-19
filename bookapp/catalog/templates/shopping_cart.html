@@ -27,7 +27,7 @@
   <h3>Saved For Later</h3>
   {% if saved_for_later %}
   <ul>
-    {% for orderbook in saved_for_later %}
+    {% for savebook in saved_for_later %}
     {% load test %}
       <li>
         <a href="{{ savebook.book.get_absolute_url }}">{{ savebook.book.title }}</a> ({{savebook.book.author}})
