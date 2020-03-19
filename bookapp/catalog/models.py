@@ -156,8 +156,6 @@ class OrderBook(models.Model):
     def get_total_book_price(self):
         return self.quantity * self.book.price
 
-    #book_total_price = models.FloatField(default=get_total_book_price(book))
-
 
 class Order(models.Model):
     user = models.ForeignKey(
@@ -173,8 +171,29 @@ class Order(models.Model):
     def get_total(self):
         total = 0
         for order_book in self.items.all():
-            total += order_book.get_total_book_price()
+            total += order_book.get_total_book_price(self)
         return total
+
+class SaveBook(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True)
+    saved = models.BooleanField(default=False)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    quantity = models.IntegerField(default=1)
+
+    def __str__(self):
+        return f'{self.book} - Qty: {self.quantity}'
+
+class Save(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True)
+    start_date = models.DateTimeField(auto_now_add=True)
+    saved_date = models.DateTimeField()
+    saved = models.BooleanField(default=False)
+    items = models.ManyToManyField(OrderBook)
+
+    def __str__(self):
+        return f'{self.user} - {self.items}'
 
 
 

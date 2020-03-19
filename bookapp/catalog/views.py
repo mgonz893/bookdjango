@@ -149,7 +149,7 @@ def shop_cart(request):
     user = request.user
     orders = OrderBook.objects.filter(user=user)
     subtotal = OrderBook.objects.filter(user=user).aggregate(
-        total=Sum('book__price'))
+        total=Sum('book__price'))#OrderBook.get_total_book_price))
     args = {'user': request.user,
             'shopping_cart': orders,
             'subtotal': subtotal}
