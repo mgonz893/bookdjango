@@ -142,6 +142,11 @@ class Book(models.Model):
             'slug': self.slug
         })
 
+    def new_book_rating_url(self):
+        return reverse('new_book_rating', kwargs={
+            'slug': self.slug
+        })
+
 
 class OrderBook(models.Model):
     user = models.ForeignKey(
