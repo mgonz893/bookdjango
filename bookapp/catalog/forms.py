@@ -1,4 +1,5 @@
 from django import forms
+from django.forms import Textarea
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.forms import UserChangeForm
@@ -74,6 +75,7 @@ class ShippingAddressForm(forms.ModelForm):
         }
         field_order = ['address', 'city', 'state', 'zipcode']
 
+
 class CreditCardForm(forms.ModelForm):
     class Meta:
         model = CreditCard
@@ -85,18 +87,21 @@ class CreditCardForm(forms.ModelForm):
         exclude = {
             'username',
         }
-        field_order = ['ccnumber', 'ccv','expiration']
+        field_order = ['ccnumber', 'ccv', 'expiration']
+
 
 class ReviewForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ReviewForm, self).__init__(*args, **kwargs)
+        self.fields['user'].disabled = True
+        self.fields['book'].disabled = True
 
     class Meta:
         model = BookRating
         fields = {
-            'user',
-            'rating',
-            'review',
+            'book', 'user', 'rating', 'review'
         }
-        field_order = ['user', 'rating', 'review']
+        field_order = ['book', 'user', 'rating', 'review']
 
 
 class WishForm(forms.ModelForm):

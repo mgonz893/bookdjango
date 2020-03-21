@@ -145,6 +145,8 @@ class BookDetailView(generic.DetailView):
         context['average'] = BookRating.objects.filter(
             book=self.get_object()).aggregate(avge=Avg('rating'))
         context['wishlists'] = Wishlist.objects.all()
+        context['orderedbook'] = Order.objects.filter(
+            user=self.request.user)
         return context
 
 
@@ -418,15 +420,46 @@ def remove_single_book_from_cart(request, slug):
 def post_new(request):
     order_qs = Order.objects.filter(user=request.user, ordered=True)
     if order_qs.exists():
-        form = ReviewForm()
-        args = {
-            'form': form,
-            'user': request.user
-        }
+        if request.method == 'POST':
+            form = ReviewForm(request.POST)
+            if form.is_valid():
+                review = form.save(commit=False)
+                review.save()
+                return redirect('/catalog')
+        else:
+            form = ReviewForm(initial={'user': request.user.username})
+            args = {
+                'form': form,
+                'user': request.user
+            }
+            return render(request, 'createrev.html', args)
     else:
         messages.info(request, "You do not own this book!")
         return render(request, 'search.html')
-    return render(request, 'createrev.html', args)
+
+
+def post_newrating(request, slug):
+    order_qs = Order.objects.filter(user=request.user, ordered=True)
+    if order_qs.exists():
+        if request.method == 'POST':
+            book = get_object_or_404(Book, slug=slug)
+            form = ReviewForm(request.POST)
+            if form.is_valid():
+                review = form.save(commit=False)
+                review.save()
+                return redirect('/catalog')
+        else:
+            book = get_object_or_404(Book, slug=slug)
+            user = request.user.userprofile
+            form = ReviewForm(initial={'user': user, 'book': book})
+            args = {
+                'form': form,
+                'user': request.user
+            }
+            return render(request, 'createrev.html', args)
+    else:
+        messages.info(request, "You do not own this book!")
+        return redirect("book-detail", slug=slug)
 
 
 def add_to_wishlist(request, slug):

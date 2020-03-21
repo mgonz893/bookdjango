@@ -28,7 +28,11 @@
   <img src="{{book.model_pic.url}}" width="240"></img></a></p>
   <p><strong>Average Rating: {{average.avge}} </strong></p>
   {% if user.is_authenticated %}
-  <p><strong><a href="{% url 'post_new' %}"> <button type="button">Create Customer Review</button> </a></strong></p>
+  {% for ordered in orderedbook %}
+  {% if ordered.ordered == True %}
+  <p><strong><a href="{{ book.new_book_rating_url }}"> <button type="button">Create Customer Review</button> </a></strong></p>
+  {% endif %}
+  {% endfor %} 
   {% endif %}
   <p><strong>Submitted Comments & Rating: </strong></p>
   {% for ratings in rating %}
