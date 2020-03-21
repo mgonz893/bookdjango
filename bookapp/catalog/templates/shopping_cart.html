@@ -16,7 +16,7 @@
           <a href="{{orderbook.book.get_add_to_cart_url}}"><button type="button">+</button></a>
         <p>Price: ${{ orderbook.quantity | multiply:orderbook.book.price }}</p>
         <a href="{{orderbook.book.get_remove_from_cart_url}}"> <button type="button">Remove from Cart</button> </a>
-        <a href="{{orderbook.book.get_add_to_save_for_later_url}}"> <button type="button">Save for Later</button> </a>
+        <a href="{{orderbook.book.get_add_to_save_for_later_url}}" onclick="{{orderbook.book.get_remove_from_cart_url}}"> <button type="button">Save for Later</button> </a>
         <p></p>
       </li>
     {% endfor %}

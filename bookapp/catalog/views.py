@@ -164,7 +164,8 @@ def shop_cart(request):
     args = {'user': request.user,
             'shopping_cart': orders,
             'subtotal': subtotal,
-            'saved_for_later': savebooks}
+            'saved_for_later': savebooks
+            }
     return render(request, 'shopping_cart.html', args)
 
 
@@ -478,11 +479,11 @@ def remove_from_wishlist(request, slug):
 
 def save_for_later(request):
     user = request.user
-    saves = SaveBook.objects.filter(user=user)
+    #savebooks = SaveBook.objects.filter(user=user)
     subtotal = SaveBook.objects.all().aggregate(
         total=Sum('book__price'))
     args = {'user': request.user,
-            'save_for_later': saves
+            'saved_for_later': savebooks
             }
     return render(request, 'shopping_cart.html', args)
 
