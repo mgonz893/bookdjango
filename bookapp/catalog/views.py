@@ -496,22 +496,33 @@ def Wishlists(request):
 
 
 def remove_from_wishlist(request, slug):
-    wishvalue = request.POST['wish_value']
     book = get_object_or_404(Book, slug=slug)
 
-    order_qs = Wishlist.objects.filter(id=wishvalue)
+    order_qs = Wishlist.objects.filter(books=book)
     if order_qs.exists():
         order = order_qs[0]
         if order.books.filter(slug=book.slug).exists():
             order.books.remove(book)
             messages.info(request, "This book has been removed from wishlist.")
-            return redirect("book-detail", slug=slug)
+            queryset = Wishlist.objects.filter(user=request.user)
+            args = {'user': request.user,
+                    'wishlist': queryset,
+                    }
+            return render(request, 'catalog/wishlists.html', args)
         else:
             messages.info(request, "This book is not in your wishlist.")
-            return redirect("book-detail", slug=slug)
+            queryset = Wishlist.objects.filter(user=request.user)
+            args = {'user': request.user,
+                    'wishlist': queryset,
+                    }
+            return render(request, 'catalog/wishlists.html', args)
     else:
         messages.info(request, "There was an error.")
-        return redirect("book-detail", slug=slug)
+        queryset = Wishlist.objects.filter(user=request.user)
+        args = {'user': request.user,
+                'wishlist': queryset,
+                }
+        return render(request, 'catalog/wishlists.html', args)
 
 
 def save_for_later(request):
