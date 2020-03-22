@@ -38,7 +38,7 @@ urlpatterns = [
     path('remove-book-from-cart/<slug>',
          views.remove_single_book_from_cart, name='remove-single-book-from-cart'),
     path('post/new/', views.post_new, name='post_new'),
-    path('post/new/<slug>', views.post_newrating, name='new_book_rating'),
+    #path('post/new/<slug>', views.post_newrating, name='new_book_rating'),
     path('add-to-wishlist/<slug>', views.add_to_wishlist, name='add-to-wishlist'),
     path('remove-from-wishlist/<slug>',
          views.remove_from_wishlist, name='remove-from-wishlist'),

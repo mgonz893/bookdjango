@@ -2,7 +2,7 @@ from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 import datetime
 from django.db.models import Sum, ExpressionWrapper
-from django.db.models import FloatField, Q
+from django.db.models import FloatField, F
 from django.utils import timezone
 from django.db.models.query import QuerySet
 from django.urls import reverse
@@ -145,8 +145,6 @@ class BookDetailView(generic.DetailView):
         context['average'] = BookRating.objects.filter(
             book=self.get_object()).aggregate(avge=Avg('rating'))
         context['wishlists'] = Wishlist.objects.all()
-        context['orderedbook'] = Order.objects.filter(
-            user=self.request.user)
         return context
 
 
@@ -162,7 +160,7 @@ def shop_cart(request):
     orders = OrderBook.objects.filter(user=user)
     savebooks = SaveBook.objects.filter(user=user)
     subtotal = OrderBook.objects.filter(user=user).aggregate(
-        total=Sum('book__price'))  # OrderBook.get_total_book_price))
+        total= Sum(F('quantity')*F('book__price'), output_field=FloatField()))
     args = {'user': request.user,
             'shopping_cart': orders,
             'subtotal': subtotal,
@@ -348,11 +346,13 @@ def add_to_cart(request, slug):
         order = order_qs[0]
         if order.items.filter(book__slug=book.slug).exists():
             order_book.quantity += 1
+            order_book.tot_quantity += 1.00
             order_book.save()
             messages.info(request, "This book quantity was updated.")
             return redirect("book-detail", slug=slug)
         else:
             order.items.add(order_book)
+            order_book.tot_quantity += 1.00
             messages.info(request, "This book was added to your cart.")
             return redirect("book-detail", slug=slug)
     else:
@@ -360,6 +360,7 @@ def add_to_cart(request, slug):
         order = Order.objects.create(
             user=request.user, ordered_date=ordered_date)
         order.items.add(order_book)
+        order_book.tot_quantity += 1.00
         messages.info(request, "This book was added to your cart.")
         return redirect("book-detail", slug=slug)
 
@@ -421,46 +422,15 @@ def remove_single_book_from_cart(request, slug):
 def post_new(request):
     order_qs = Order.objects.filter(user=request.user, ordered=True)
     if order_qs.exists():
-        if request.method == 'POST':
-            form = ReviewForm(request.POST)
-            if form.is_valid():
-                review = form.save(commit=False)
-                review.save()
-                return redirect('/catalog')
-        else:
-            form = ReviewForm(initial={'user': request.user.username})
-            args = {
-                'form': form,
-                'user': request.user
-            }
-            return render(request, 'createrev.html', args)
+        form = ReviewForm()
+        args = {
+            'form': form,
+            'user': request.user
+        }
     else:
         messages.info(request, "You do not own this book!")
         return render(request, 'search.html')
-
-
-def post_newrating(request, slug):
-    order_qs = Order.objects.filter(user=request.user, ordered=True)
-    if order_qs.exists():
-        if request.method == 'POST':
-            book = get_object_or_404(Book, slug=slug)
-            form = ReviewForm(request.POST)
-            if form.is_valid():
-                review = form.save(commit=False)
-                review.save()
-                return redirect('/catalog')
-        else:
-            book = get_object_or_404(Book, slug=slug)
-            user = request.user.userprofile
-            form = ReviewForm(initial={'user': user, 'book': book})
-            args = {
-                'form': form,
-                'user': request.user
-            }
-            return render(request, 'createrev.html', args)
-    else:
-        messages.info(request, "You do not own this book!")
-        return redirect("book-detail", slug=slug)
+    return render(request, 'createrev.html', args)
 
 
 def add_to_wishlist(request, slug):
