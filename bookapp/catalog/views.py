@@ -122,7 +122,7 @@ class BookListView(generic.ListView):
     paginate_by = 10
 
     class Meta:
-        ordering = ['genre', 'title', 'price']
+        ordering = ['genre']
 
     def get_queryset(self):
         order = self.request.GET.get('orderby', 'genre')
@@ -131,7 +131,7 @@ class BookListView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super(BookListView, self).get_context_data(**kwargs)
-        context['orderby'] = self.request.GET.get('orderby', 'genre')
+        context['orderby'] = self.request.GET.get('orderby')
         return context
 
 
