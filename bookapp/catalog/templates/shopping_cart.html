@@ -23,6 +23,9 @@
     <p></p>
         <strong>Subtotal: ${{ subtotal.total }}</strong>
   </ul>
+  {% else %}
+    <p><strong>There are no books in your shopping cart.</strong></p>
+  {% endif %}   
 
   <h3>Saved For Later</h3>
   {% if saved_for_later %}
@@ -39,10 +42,6 @@
 
     {% else %}
     <p><strong>There are no books saved for later.</strong></p>
-    {% endif %}
-
-  {% else %}
-    <p><strong>There are no books in your shopping cart.</strong></p>
-  {% endif %}     
+    {% endif %}  
   
 {% endblock %}

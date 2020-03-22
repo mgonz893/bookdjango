@@ -145,11 +145,8 @@ class BookDetailView(generic.DetailView):
         context['average'] = BookRating.objects.filter(
             book=self.get_object()).aggregate(avge=Avg('rating'))
         context['wishlists'] = Wishlist.objects.all()
-<<<<<<< HEAD
-=======
         context['orderedbook'] = OrderBook.objects.filter(
             book=self.get_object())
->>>>>>> 21e531a916c8523007460767c4f1e8b3313a341a
         return context
 
 
@@ -351,13 +348,11 @@ def add_to_cart(request, slug):
         order = order_qs[0]
         if order.items.filter(book__slug=book.slug).exists():
             order_book.quantity += 1
-            order_book.tot_quantity += 1.00
             order_book.save()
             messages.info(request, "This book quantity was updated.")
             return redirect("book-detail", slug=slug)
         else:
             order.items.add(order_book)
-            order_book.tot_quantity += 1.00
             messages.info(request, "This book was added to your cart.")
             return redirect("book-detail", slug=slug)
     else:
@@ -365,7 +360,6 @@ def add_to_cart(request, slug):
         order = Order.objects.create(
             user=request.user, ordered_date=ordered_date)
         order.items.add(order_book)
-        order_book.tot_quantity += 1.00
         messages.info(request, "This book was added to your cart.")
         return redirect("book-detail", slug=slug)
 
@@ -436,9 +430,7 @@ def post_new(request):
     else:
         messages.info(request, "You do not own this book!")
         return render(request, 'search.html')
-<<<<<<< HEAD
     return render(request, 'createrev.html', args)
-=======
 
 
 def post_newrating(request, slug):
@@ -467,7 +459,6 @@ def post_newrating(request, slug):
     else:
         messages.info(request, "You do not own this book!")
         return redirect("book-detail", slug=slug)
->>>>>>> 21e531a916c8523007460767c4f1e8b3313a341a
 
 
 def add_to_wishlist(request, slug):
@@ -530,9 +521,7 @@ def remove_from_wishlist(request, slug):
 
 def save_for_later(request):
     user = request.user
-    #savebooks = SaveBook.objects.filter(user=user)
-    subtotal = SaveBook.objects.all().aggregate(
-        total=Sum('book__price'))
+    savebooks = SaveBook.objects.filter(user=user)
     args = {'user': request.user,
             'saved_for_later': savebooks
             }
@@ -555,12 +544,25 @@ def add_save_for_later(request, slug):
             return redirect("book-detail", slug=slug)
         else:
             save.items.add(save_book)
-            messages.info(request, "This book was saved for later.")
+            order_qs = Order.objects.filter(user=request.user, ordered=False)
+            if order_qs.exists():
+                order = order_qs[0]
+                if order.items.filter(book__slug=book.slug).exists():
+                    order_book = OrderBook.objects.filter(
+                    book=book,
+                    user=request.user,
+                    ordered=False
+                    )[0]
+                    if order_book.quantity > 1:
+                        order_book.delete()
+                    else:
+                        order_book.delete()
+                        messages.info(request, "This book was saved for later.")
             return redirect("book-detail", slug=slug)
     else:
         saved_date = timezone.now()
         save = Save.objects.create(
             user=request.user, saved_date=saved_date)
         save.items.add(save_book)
-        messages.info(request, "This book was added to your cart.")
+        messages.info(request, "This book was saved for later.")
         return redirect("book-detail", slug=slug)
