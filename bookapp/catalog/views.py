@@ -146,7 +146,7 @@ class BookDetailView(generic.DetailView):
             book=self.get_object()).aggregate(avge=Avg('rating'))
         context['wishlists'] = Wishlist.objects.all()
         context['orderedbook'] = OrderBook.objects.filter(
-            user=self.request.user)
+            book=self.get_object())
         return context
 
 

@@ -98,6 +98,7 @@ class ReviewForm(forms.ModelForm):
 
     class Meta:
         model = BookRating
+        widgets = {'book': forms.HiddenInput(), 'user': forms.HiddenInput()}
         fields = {
             'book', 'user', 'rating', 'review'
         }
