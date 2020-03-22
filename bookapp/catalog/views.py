@@ -145,7 +145,7 @@ class BookDetailView(generic.DetailView):
         context['average'] = BookRating.objects.filter(
             book=self.get_object()).aggregate(avge=Avg('rating'))
         context['wishlists'] = Wishlist.objects.all()
-        context['orderedbook'] = Order.objects.filter(
+        context['orderedbook'] = OrderBook.objects.filter(
             user=self.request.user)
         return context
 
@@ -418,6 +418,7 @@ def remove_single_book_from_cart(request, slug):
 
 
 def post_new(request):
+
     order_qs = Order.objects.filter(user=request.user, ordered=True)
     if order_qs.exists():
         if request.method == 'POST':
@@ -439,22 +440,26 @@ def post_new(request):
 
 
 def post_newrating(request, slug):
-    order_qs = Order.objects.filter(user=request.user, ordered=True)
+    order_qs = OrderBook.objects.filter(user=request.user, ordered=True)
     if order_qs.exists():
         if request.method == 'POST':
-            book = get_object_or_404(Book, slug=slug)
             form = ReviewForm(request.POST)
             if form.is_valid():
-                review = form.save(commit=False)
-                review.save()
-                return redirect('/catalog')
+                messages.info(request, "Your review has been posted.")
+                form.save()
+                return redirect("book-detail", slug=slug)
+            args = {
+                'form': form
+            }
+            return render(request, 'createrev.html', args)
         else:
             book = get_object_or_404(Book, slug=slug)
             user = request.user.userprofile
             form = ReviewForm(initial={'user': user, 'book': book})
             args = {
                 'form': form,
-                'user': request.user
+                'user': request.user.userprofile,
+                'book': book
             }
             return render(request, 'createrev.html', args)
     else:

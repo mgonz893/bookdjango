@@ -93,8 +93,8 @@ class CreditCardForm(forms.ModelForm):
 class ReviewForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ReviewForm, self).__init__(*args, **kwargs)
-        self.fields['user'].disabled = True
-        self.fields['book'].disabled = True
+        self.fields['user'].widget.attrs['readonly'] = True
+        self.fields['book'].widget.attrs['readonly'] = True
 
     class Meta:
         model = BookRating

@@ -4,6 +4,7 @@
   <h1>Rating and Comment</h1>
     <form method="POST" class="post-form">{% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" name"Submit" method="POST">Save</button>
+    {{form.errors}}
+    <input type="submit" name"Submit" method="POST"></input>
     </form>
 {% endblock %}
