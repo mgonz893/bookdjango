@@ -1,19 +1,28 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
+<script type="text/javascript">
+function CheckSort(val){
+ var element=document.getElementById('sorts');
+   document.getElementById("sorthidden").value = val
+}
+
+</script> 
   <h2>Book List</h2>
-  Sort by: <select id="browse" value="orderby">
+  <form method="get" action="{% url 'books' %}">
+  Sort by: <select id="browse" value="orderby" name="sorts" onchange='CheckSort(this.value);'>
+  <option value="genre">Genre</option>
   <option value="title">Title</option>
   <option value="author">Author</option>
   <option value="price">Price</option>
-  <option value="rating">Rating</option>
-  <option value="date">Date</option>
+  <option value="bookrating">Rating</option>
+  <option value="publishing_date">Date</option>
   </select>
 
-  <form method="get" action="{% url 'books' %}">
-  <p>order_by: <input type="text" value=orderby name="orderby"/></p>
+  <p><input type="hidden" id="sorthidden" value=genre name="orderby"/></p>
   <p><input type="submit" name="submit" value="submit"/></p>
   </form>
+  
 
   {% if book_list %}
   <ul>

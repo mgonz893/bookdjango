@@ -122,7 +122,7 @@ class BookListView(generic.ListView):
     paginate_by = 10
 
     class Meta:
-        ordering = ['genre', 'title', 'price']
+        ordering = ['genre']
 
     def get_queryset(self):
         order = self.request.GET.get('orderby', 'genre')
@@ -131,7 +131,7 @@ class BookListView(generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super(BookListView, self).get_context_data(**kwargs)
-        context['orderby'] = self.request.GET.get('orderby', 'genre')
+        context['orderby'] = self.request.GET.get('orderby')
         return context
 
 
@@ -145,6 +145,11 @@ class BookDetailView(generic.DetailView):
         context['average'] = BookRating.objects.filter(
             book=self.get_object()).aggregate(avge=Avg('rating'))
         context['wishlists'] = Wishlist.objects.all()
+<<<<<<< HEAD
+=======
+        context['orderedbook'] = OrderBook.objects.filter(
+            book=self.get_object())
+>>>>>>> 21e531a916c8523007460767c4f1e8b3313a341a
         return context
 
 
@@ -420,6 +425,7 @@ def remove_single_book_from_cart(request, slug):
 
 
 def post_new(request):
+
     order_qs = Order.objects.filter(user=request.user, ordered=True)
     if order_qs.exists():
         form = ReviewForm()
@@ -430,7 +436,38 @@ def post_new(request):
     else:
         messages.info(request, "You do not own this book!")
         return render(request, 'search.html')
+<<<<<<< HEAD
     return render(request, 'createrev.html', args)
+=======
+
+
+def post_newrating(request, slug):
+    order_qs = OrderBook.objects.filter(user=request.user, ordered=True)
+    if order_qs.exists():
+        if request.method == 'POST':
+            form = ReviewForm(request.POST)
+            if form.is_valid():
+                messages.info(request, "Your review has been posted.")
+                form.save()
+                return redirect("book-detail", slug=slug)
+            args = {
+                'form': form
+            }
+            return render(request, 'createrev.html', args)
+        else:
+            book = get_object_or_404(Book, slug=slug)
+            user = request.user.userprofile
+            form = ReviewForm(initial={'user': user, 'book': book})
+            args = {
+                'form': form,
+                'user': request.user.userprofile,
+                'book': book
+            }
+            return render(request, 'createrev.html', args)
+    else:
+        messages.info(request, "You do not own this book!")
+        return redirect("book-detail", slug=slug)
+>>>>>>> 21e531a916c8523007460767c4f1e8b3313a341a
 
 
 def add_to_wishlist(request, slug):
@@ -462,22 +499,33 @@ def Wishlists(request):
 
 
 def remove_from_wishlist(request, slug):
-    wishvalue = request.POST['wish_value']
     book = get_object_or_404(Book, slug=slug)
 
-    order_qs = Wishlist.objects.filter(id=wishvalue)
+    order_qs = Wishlist.objects.filter(books=book)
     if order_qs.exists():
         order = order_qs[0]
         if order.books.filter(slug=book.slug).exists():
             order.books.remove(book)
             messages.info(request, "This book has been removed from wishlist.")
-            return redirect("book-detail", slug=slug)
+            queryset = Wishlist.objects.filter(user=request.user)
+            args = {'user': request.user,
+                    'wishlist': queryset,
+                    }
+            return render(request, 'catalog/wishlists.html', args)
         else:
             messages.info(request, "This book is not in your wishlist.")
-            return redirect("book-detail", slug=slug)
+            queryset = Wishlist.objects.filter(user=request.user)
+            args = {'user': request.user,
+                    'wishlist': queryset,
+                    }
+            return render(request, 'catalog/wishlists.html', args)
     else:
         messages.info(request, "There was an error.")
-        return redirect("book-detail", slug=slug)
+        queryset = Wishlist.objects.filter(user=request.user)
+        args = {'user': request.user,
+                'wishlist': queryset,
+                }
+        return render(request, 'catalog/wishlists.html', args)
 
 
 def save_for_later(request):
