@@ -100,7 +100,7 @@ class WishlistsView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
-            context['wishlist'] = Wishlist.objects.filter(
+            context['wishlists'] = Wishlist.objects.filter(
                 user=self.request.user)
         return context
 

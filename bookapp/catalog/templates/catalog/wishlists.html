@@ -3,15 +3,26 @@
 {% block content %}
 {% if user.is_authenticated %}
     <h1>Your Wishlists</h1>
-    {% for wishlist in wishlist%}
+    {% for wishlist in wishlists %}
     <h4>{{ wishlist.name }}</h4>
     <ul>
     {% for book in wishlist.books.all %}
     <li>{{ book.title }} <a href="{{book.get_add_to_cart_url}}"> <button type="button">Add to Cart</button> </a>
     <a href="{{book.get_remove_from_wishlist_url}}"> <button type="button">Remove from Wishlist</button> </a>
+
+        <form action="" method="post">
+            {% csrf_token %}
+            Move to Wishlist:
+            <select name="wish">
+                {% for list in wishlists %}
+            <option value="{{list.id}}">{{list.name}}</option>
+                {% endfor %}
+            </select>
+            <a href=""><button type="submit">Move</button></a>
+        </form>
+
     </li>
     {% endfor %}
-    </form>
     </ul>
     {% endfor %}
     {% else %}
