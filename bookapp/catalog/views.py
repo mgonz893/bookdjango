@@ -237,6 +237,14 @@ def newwish(request):
     return render(request, 'addwish.html', args)
 
 
+def delete_wishlist(request):
+    id = request.POST['del']
+    Wishlist.objects.filter(id=id).delete()
+
+    messages.info(request, "Wishlist has been deleted.")
+    return redirect('wishlists')
+
+
 def shipaddr(request):
     user = request.user.userprofile
     ships = ShippingAddr.objects.filter(username=user)

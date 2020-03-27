@@ -4,7 +4,7 @@
 {% if user.is_authenticated %}
     <h1>Your Wishlists</h1>
     {% for wishlist in wishlists %}
-    <h4>{{ wishlist.name }}</h4>
+    <h4>{{ wishlist.name }}</h4> <form action="{% url 'delete-wishlist' %}" method="post">{% csrf_token %} <button type="submit" name="del" value="{{wishlist.id}}">Delete list</button></form>
     <ul>
     {% for book in wishlist.books.all %}
     <li>{{ book.title }} <a href="{{book.get_add_to_cart_url}}"> <button type="button">Add to Cart</button> </a>
@@ -19,7 +19,7 @@
                 {% endfor %}
             </select>
             <input type="hidden" name="cwish" value="{{wishlist.id}}">
-            <a href=""><button type="submit">Move</button></a>
+            <button type="submit">Move</button>
         </form>
 
     </li>

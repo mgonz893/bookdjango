@@ -46,4 +46,5 @@ urlpatterns = [
     path('add-to-save-for-later/<slug>',
          views.add_save_for_later, name='add-to-save-for-later'),
     path('transfer-wishlist/<slug>', views.transfer_wishlist, name='transfer-wishlist'),
+    path('delete-wishlist', views.delete_wishlist, name='delete-wishlist'),
 ]
