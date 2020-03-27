@@ -480,6 +480,10 @@ def add_to_wishlist(request, slug):
         return redirect("book-detail", slug=slug)
 
 
+def transfer_wishlist(request, slug):
+    return
+
+
 def Wishlists(request):
     model = Wishlist
     queryset = Wishlist.objects.filter(user=request.user)
