@@ -481,7 +481,30 @@ def add_to_wishlist(request, slug):
 
 
 def transfer_wishlist(request, slug):
-    return
+    selected_wishlist_id = request.POST['wish']  # Wishlist to transfer to
+    current_wishlist_id = request.POST['cwish']  # Wishlist to transfer from
+    book = get_object_or_404(Book, slug=slug)
+
+    find_list = Wishlist.objects.filter(id=selected_wishlist_id)
+    if find_list.exists():
+        selected_wl = find_list[0]
+
+        # Prevents transferring to same wishlist, which would delete the book
+        if selected_wl.books.filter(slug=book.slug).exists():
+            messages.info(request, "This book is already in that wishlist")
+            return redirect("wishlists")
+        # Adds book to selected wishlist, removes it from current
+        else:
+            selected_wl.books.add(book)
+
+            current_wl = get_object_or_404(Wishlist, id=current_wishlist_id)
+            current_wl.books.remove(book)
+
+            messages.info(request, "Book has transferred wishlists")
+            return redirect("wishlists")
+
+    messages.info("An error has occurred.")
+    return redirect("wishlists")
 
 
 def Wishlists(request):
