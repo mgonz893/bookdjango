@@ -532,12 +532,12 @@ def remove_from_wishlist(request, slug):
         order = order_qs[0]
         if order.books.filter(slug=book.slug).exists():
             order.books.remove(book)
-            messages.info(request, "This book has been removed from wishlist.")
+            messages.info(request, "This book has been removed from your wishlist.")
             queryset = Wishlist.objects.filter(user=request.user)
             args = {'user': request.user,
                     'wishlist': queryset,
                     }
-            return render(request, 'catalog/wishlists.html', args)
+            return redirect('wishlists')
         else:
             messages.info(request, "This book is not in your wishlist.")
             queryset = Wishlist.objects.filter(user=request.user)
