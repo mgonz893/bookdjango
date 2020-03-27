@@ -26,9 +26,12 @@
     {% endfor %}
     </ul>
     {% endfor %}
+
+    <a href="newwish/">Add New Wishlist</a>
+
     {% else %}
     <h1>Oops!</h1>
     <p>You are not <a href="{% url 'login' %}">logged in</a>.</p>
 {% endif %}
-<a href="newwish/">Add New Wishlist</a>
+
 {% endblock %}
