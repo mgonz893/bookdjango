@@ -213,7 +213,7 @@ class BookRating(models.Model):
     user = models.ForeignKey('UserProfile', on_delete=models.CASCADE)
     review = models.TextField(max_length=1000)
     rating = models.SmallIntegerField(choices=[(i, i) for i in range(1, 6)])
-
+    anonymous = models.BooleanField("Post as anonymous", default=False)
     def __str__(self):
         return f'{self.user} - {self.book} - {self.rating}'
 
