@@ -147,6 +147,11 @@ class Book(models.Model):
             'slug': self.slug
         })
 
+    def get_transfer_wishlist_url(self):
+        return reverse('transfer-wishlist', kwargs={
+            'slug': self.slug
+        })
+
 
 class OrderBook(models.Model):
     user = models.ForeignKey(
