@@ -38,8 +38,8 @@
           <li><a href="{% url 'shoppingcart' %}">Shopping Cart</a></li>      
           <li>User: {{ user.get_username }}</li>
           <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
-          <p><li style="font-size: 11px"><a href="{% url 'profile'%}">View Profile</a>
-          <li style="font-size: 11px"><a href="{% url 'wishlists'%}">View Wishlists</a></p>
+          <p><li style="font-size: 12px"><a href="{% url 'profile'%}">View Profile</a>
+          <li style="font-size: 12px"><a href="{% url 'wishlists'%}">View Wishlists</a></p>
           {% else %}
             <li><a href="{% url 'login'%}">Login</a></li>   
             <li><a href ="{% url 'signup' %}">Register</a></li> 

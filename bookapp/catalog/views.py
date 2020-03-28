@@ -2,7 +2,7 @@ from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 import datetime
 from django.db.models import Sum, ExpressionWrapper
-from django.db.models import FloatField, F
+from django.db.models import FloatField, F, Q
 from django.utils import timezone
 from django.db.models.query import QuerySet
 from django.urls import reverse
@@ -162,7 +162,7 @@ def shop_cart(request):
     orders = OrderBook.objects.filter(user=user)
     savebooks = SaveBook.objects.filter(user=user)
     subtotal = OrderBook.objects.filter(user=user).aggregate(
-        total= Sum(F('quantity')*F('book__price'), output_field=FloatField()))
+        total=Sum(F('quantity')*F('book__price'), output_field=FloatField()))
     args = {'user': request.user,
             'shopping_cart': orders,
             'subtotal': subtotal,
@@ -532,7 +532,8 @@ def remove_from_wishlist(request, slug):
         order = order_qs[0]
         if order.books.filter(slug=book.slug).exists():
             order.books.remove(book)
-            messages.info(request, "This book has been removed from your wishlist.")
+            messages.info(
+                request, "This book has been removed from your wishlist.")
             queryset = Wishlist.objects.filter(user=request.user)
             args = {'user': request.user,
                     'wishlist': queryset,
@@ -584,15 +585,16 @@ def add_save_for_later(request, slug):
                 order = order_qs[0]
                 if order.items.filter(book__slug=book.slug).exists():
                     order_book = OrderBook.objects.filter(
-                    book=book,
-                    user=request.user,
-                    ordered=False
+                        book=book,
+                        user=request.user,
+                        ordered=False
                     )[0]
                     if order_book.quantity > 1:
                         order_book.delete()
                     else:
                         order_book.delete()
-                        messages.info(request, "This book was saved for later.")
+                        messages.info(
+                            request, "This book was saved for later.")
             return redirect("book-detail", slug=slug)
     else:
         saved_date = timezone.now()

@@ -9,6 +9,7 @@ function CheckSort(val){
 
 </script> 
   <h2>Book List</h2>
+  <p></p>
   <form method="get" action="{% url 'books' %}">
   Sort by: <select id="browse" value="orderby" name="sorts" onchange='CheckSort(this.value);'>
   <option value="genre">Genre</option>
@@ -19,10 +20,10 @@ function CheckSort(val){
   <option value="publishing_date">Date</option>
   </select>
 
-  <p><input type="hidden" id="sorthidden" value=genre name="orderby"/></p>
-  <p><input type="submit" name="submit" value="submit"/></p>
+  <input type="hidden" id="sorthidden" value=genre name="orderby"/>
+  <input type="submit" name="submit" value="Submit"/>
   </form>
-  
+  <p></p>
 
   {% if book_list %}
   <ul>
