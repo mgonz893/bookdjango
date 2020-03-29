@@ -8,7 +8,7 @@
     <strong>Card Number: </strong>{{card.ccnumber}} <p></p>
     <p><strong>CVV: </strong>{{card.ccv}} </p>  
      <p><strong>Expiration date: </strong>{{card.expiration|date:"M/Y"}} </p>  
-     <p><a href= "">Edit</a> <strong> | </strong> <a href= "">Delete</a> <strong> | </strong> <a href="">Set as default</a></p>
+     <p><a href= {% url 'editcreditcard' card.id %}>Edit</a> <strong> | </strong> <a href= "">Delete</a> <strong> | </strong> <a href="">Set as default</a></p>
   </li>  
   </ul>
   {% endfor %}  

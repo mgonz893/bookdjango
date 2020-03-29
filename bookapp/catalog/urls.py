@@ -33,6 +33,8 @@ urlpatterns = [
          views.setdefaultaddress, name='setdefaultaddr'),
     path('creditcards/', views.creditcards, name='creditcards'),
     path('creditcards/addcreditcard/', views.addcreditcard, name='addcreditcard'),
+    path('shipaddr/editcreditcard/<str:pk>/',
+         views.editcreditcard, name='editcreditcard'),
     path('remove-from-cart/<slug>',
          views.remove_from_cart, name='remove-from-cart'),
     path('remove-book-from-cart/<slug>',
