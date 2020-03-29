@@ -455,16 +455,11 @@ def post_new(request):
     order_qs = Order.objects.filter(user=request.user, ordered=True)
     if order_qs.exists():
         form = ReviewForm()
-        if BookRating.anonymous(True)
-        {
-            'form' : form,
-             user = 'anonymous'
-        }
         else
         args = {
             'form': form,
             'user': request.user
-        }
+               }
     else:
         messages.info(request, "You do not own this book!")
         return render(request, 'search.html')
