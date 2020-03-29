@@ -297,13 +297,14 @@ def deleteshippingaddress(request, pk):
     args = {'item': address}
     return render(request, 'deleteshippingaddr.html', args)
 
+
 def deletecreditcard(request, pk):
     card = CreditCard.objects.get(id=pk)
     if request.method == 'POST':
         card.delete()
-        return redirect('/catalog/creditcards')    
-    
-    args = { 'item': card}
+        return redirect('/catalog/creditcards')
+
+    args = {'item': card}
     return render(request, 'deletecreditcard.html', args)
 
 
@@ -353,6 +354,7 @@ def addcreditcard(request):
         }
     return render(request, 'addcreditcard.html', args)
 
+
 def editcreditcard(request, pk):
 
     card = CreditCard.objects.get(id=pk)
@@ -366,7 +368,7 @@ def editcreditcard(request, pk):
     args = {
         'form': form
     }
-    return render(request, 'addcreditcard.html', args)    
+    return render(request, 'addcreditcard.html', args)
 
 
 def add_to_cart(request, slug):
@@ -455,11 +457,10 @@ def post_new(request):
     order_qs = Order.objects.filter(user=request.user, ordered=True)
     if order_qs.exists():
         form = ReviewForm()
-        else
         args = {
             'form': form,
             'user': request.user
-               }
+        }
     else:
         messages.info(request, "You do not own this book!")
         return render(request, 'search.html')
