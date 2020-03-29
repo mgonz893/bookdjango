@@ -103,7 +103,7 @@ class Book(models.Model):
 
     def __str__(self):
         """String for representing the Model object."""
-        return self.title
+        return self.title + " " + self.slug
 
     @property
     def average_rating(self):
@@ -215,6 +215,7 @@ class BookRating(models.Model):
     review = models.TextField(max_length=1000)
     rating = models.SmallIntegerField(choices=[(i, i) for i in range(1, 6)])
     anonymous = models.BooleanField("Post as anonymous", default=False)
+
     def __str__(self):
         return f'{self.user} - {self.book} - {self.rating}'
 

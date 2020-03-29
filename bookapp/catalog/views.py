@@ -375,9 +375,8 @@ def add_to_cart(request, slug):
     book = get_object_or_404(Book, slug=slug)
     order_book, created = OrderBook.objects.get_or_create(
         book=book,
-        user=request.user,
-        ordered=False)
-    order_qs = Order.objects.filter(user=request.user, ordered=False)
+        user=request.user)
+    order_qs = Order.objects.filter(user=request.user)
     if order_qs.exists():
         order = order_qs[0]
         if order.items.filter(book__slug=book.slug).exists():
@@ -400,14 +399,13 @@ def add_to_cart(request, slug):
 
 def remove_from_cart(request, slug):
     book = get_object_or_404(Book, slug=slug)
-    order_qs = Order.objects.filter(user=request.user, ordered=False)
+    order_qs = Order.objects.filter(user=request.user)
     if order_qs.exists():
         order = order_qs[0]
         if order.items.filter(book__slug=book.slug).exists():
             order_book = OrderBook.objects.filter(
                 book=book,
-                user=request.user,
-                ordered=False
+                user=request.user
             )[0]
             if order_book.quantity > 1:
                 order_book.delete()
@@ -426,14 +424,13 @@ def remove_from_cart(request, slug):
 
 def remove_single_book_from_cart(request, slug):
     book = get_object_or_404(Book, slug=slug)
-    order_qs = Order.objects.filter(user=request.user, ordered=False)
+    order_qs = Order.objects.filter(user=request.user)
     if order_qs.exists():
         order = order_qs[0]
         if order.items.filter(book__slug=book.slug).exists():
             order_book = OrderBook.objects.filter(
                 book=book,
-                user=request.user,
-                ordered=False
+                user=request.user
             )[0]
             if order_book.quantity > 1:
                 order_book.quantity -= 1
@@ -606,14 +603,14 @@ def add_save_for_later(request, slug):
             return redirect("book-detail", slug=slug)
         else:
             save.items.add(save_book)
-            order_qs = Order.objects.filter(user=request.user, ordered=False)
+            order_qs = Order.objects.filter(user=request.user)
             if order_qs.exists():
                 order = order_qs[0]
                 if order.items.filter(book__slug=book.slug).exists():
                     order_book = OrderBook.objects.filter(
                         book=book,
-                        user=request.user,
-                        ordered=False
+                        user=request.user
+
                     )[0]
                     if order_book.quantity > 1:
                         order_book.delete()
