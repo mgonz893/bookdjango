@@ -9,6 +9,7 @@ function CheckSort(val){
 
 </script> 
   <h2>Book List</h2>
+  <p></p>
   <form method="get" action="{% url 'books' %}">
   Sort by: <select id="browse" value="orderby" name="sorts" onchange='CheckSort(this.value);'>
   <option value="genre">Genre</option>
@@ -19,13 +20,22 @@ function CheckSort(val){
   <option value="publishing_date">Date</option>
   </select>
 
-  <p><input type="hidden" id="sorthidden" value=genre name="orderby"/></p>
-  <p><input type="submit" name="submit" value="submit"/></p>
+  <input type="hidden" id="sorthidden" value=genre name="orderby"/>
+  <input type="submit" name="submit" value="Submit"/>
   </form>
-  
+  <p></p>
 
   {% if book_list %}
-  <ul>
+  <table style="width: 90%">
+    {% for book in book_list %}
+      <td>
+        <a href="{{ book.get_absolute_url }}">{{ book.title }}</a> ({{book.author}}) <strong>${{book.price}}</strong>
+        <p><strong>Average Rating:</strong>{{ book.average_rating }}</p>
+        <p><img src={{book.model_pic.url}} style="width: 100px; height: 100px" /></p>
+      </td>
+    {% endfor %}
+  </table>
+  <!----<ul>
     {% for book in book_list %}
       <li>
         <a href="{{ book.get_absolute_url }}">{{ book.title }}</a> ({{book.author}}) <strong>${{book.price}}</strong>
@@ -33,7 +43,7 @@ function CheckSort(val){
         <p><img src={{book.model_pic.url}} style="width: 100px; height: 100px" /></p>
       </li>
     {% endfor %}
-  </ul>
+  </ul>-->
   {% else %}
     <p><strong>There are no books with that genre in this catalog.</strong></p>
   {% endif %}     

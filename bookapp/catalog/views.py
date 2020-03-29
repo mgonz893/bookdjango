@@ -2,7 +2,7 @@ from django.contrib.auth import login, authenticate
 from django.shortcuts import render, redirect
 import datetime
 from django.db.models import Sum, ExpressionWrapper
-from django.db.models import FloatField, F
+from django.db.models import FloatField, F, Q
 from django.utils import timezone
 from django.db.models.query import QuerySet
 from django.urls import reverse
@@ -100,7 +100,7 @@ class WishlistsView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_authenticated:
-            context['wishlist'] = Wishlist.objects.filter(
+            context['wishlists'] = Wishlist.objects.filter(
                 user=self.request.user)
         return context
 
@@ -162,7 +162,7 @@ def shop_cart(request):
     orders = OrderBook.objects.filter(user=user)
     savebooks = SaveBook.objects.filter(user=user)
     subtotal = OrderBook.objects.filter(user=user).aggregate(
-        total= Sum(F('quantity')*F('book__price'), output_field=FloatField()))
+        total=Sum(F('quantity')*F('book__price'), output_field=FloatField()))
     args = {'user': request.user,
             'shopping_cart': orders,
             'subtotal': subtotal,
@@ -237,6 +237,14 @@ def newwish(request):
     return render(request, 'addwish.html', args)
 
 
+def delete_wishlist(request):
+    id = request.POST['del']
+    Wishlist.objects.filter(id=id).delete()
+
+    messages.info(request, "Wishlist has been deleted.")
+    return redirect('wishlists')
+
+
 def shipaddr(request):
     user = request.user.userprofile
     ships = ShippingAddr.objects.filter(username=user)
@@ -290,6 +298,16 @@ def deleteshippingaddress(request, pk):
     return render(request, 'deleteshippingaddr.html', args)
 
 
+def deletecreditcard(request, pk):
+    card = CreditCard.objects.get(id=pk)
+    if request.method == 'POST':
+        card.delete()
+        return redirect('/catalog/creditcards')
+
+    args = {'item': card}
+    return render(request, 'deletecreditcard.html', args)
+
+
 def setdefaultaddress(request, pk):
     newdefault = ShippingAddr.objects.get(id=pk)
     currentdefault = UserProfile.objects.get(user=request.user)
@@ -334,6 +352,22 @@ def addcreditcard(request):
             'form': form,
             'username': request.user.userprofile
         }
+    return render(request, 'addcreditcard.html', args)
+
+
+def editcreditcard(request, pk):
+
+    card = CreditCard.objects.get(id=pk)
+    form = CreditCardForm(instance=card)
+
+    if request.method == 'POST':
+        form = CreditCardForm(request.POST, instance=card)
+        if form.is_valid():
+            form.save()
+            return redirect('/catalog/creditcards')
+    args = {
+        'form': form
+    }
     return render(request, 'addcreditcard.html', args)
 
 
@@ -480,6 +514,33 @@ def add_to_wishlist(request, slug):
         return redirect("book-detail", slug=slug)
 
 
+def transfer_wishlist(request, slug):
+    selected_wishlist_id = request.POST['wish']  # Wishlist to transfer to
+    current_wishlist_id = request.POST['cwish']  # Wishlist to transfer from
+    book = get_object_or_404(Book, slug=slug)
+
+    find_list = Wishlist.objects.filter(id=selected_wishlist_id)
+    if find_list.exists():
+        selected_wl = find_list[0]
+
+        # Prevents transferring to same wishlist, which would delete the book
+        if selected_wl.books.filter(slug=book.slug).exists():
+            messages.info(request, "This book is already in that wishlist")
+            return redirect("wishlists")
+        # Adds book to selected wishlist, removes it from current
+        else:
+            selected_wl.books.add(book)
+
+            current_wl = get_object_or_404(Wishlist, id=current_wishlist_id)
+            current_wl.books.remove(book)
+
+            messages.info(request, "Book has transferred wishlists")
+            return redirect("wishlists")
+
+    messages.info("An error has occurred.")
+    return redirect("wishlists")
+
+
 def Wishlists(request):
     model = Wishlist
     queryset = Wishlist.objects.filter(user=request.user)
@@ -497,12 +558,13 @@ def remove_from_wishlist(request, slug):
         order = order_qs[0]
         if order.books.filter(slug=book.slug).exists():
             order.books.remove(book)
-            messages.info(request, "This book has been removed from wishlist.")
+            messages.info(
+                request, "This book has been removed from your wishlist.")
             queryset = Wishlist.objects.filter(user=request.user)
             args = {'user': request.user,
                     'wishlist': queryset,
                     }
-            return render(request, 'catalog/wishlists.html', args)
+            return redirect('wishlists')
         else:
             messages.info(request, "This book is not in your wishlist.")
             queryset = Wishlist.objects.filter(user=request.user)
@@ -549,15 +611,16 @@ def add_save_for_later(request, slug):
                 order = order_qs[0]
                 if order.items.filter(book__slug=book.slug).exists():
                     order_book = OrderBook.objects.filter(
-                    book=book,
-                    user=request.user,
-                    ordered=False
+                        book=book,
+                        user=request.user,
+                        ordered=False
                     )[0]
                     if order_book.quantity > 1:
                         order_book.delete()
                     else:
                         order_book.delete()
-                        messages.info(request, "This book was saved for later.")
+                        messages.info(
+                            request, "This book was saved for later.")
             return redirect("book-detail", slug=slug)
     else:
         saved_date = timezone.now()

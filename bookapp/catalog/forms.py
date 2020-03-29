@@ -49,6 +49,7 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         fields = {
+            'nickname',
             'address',
             'city',
             'state',
@@ -58,7 +59,7 @@ class ProfileForm(forms.ModelForm):
             'password',
         }
 
-        field_order = ['address', 'city', 'state', 'zipcode']
+        field_order = ['nickname','address', 'city', 'state', 'zipcode']
 
 
 class ShippingAddressForm(forms.ModelForm):
@@ -100,9 +101,9 @@ class ReviewForm(forms.ModelForm):
         model = BookRating
         widgets = {'book': forms.HiddenInput(), 'user': forms.HiddenInput()}
         fields = {
-            'book', 'user', 'rating', 'review'
+            'book', 'user', 'rating', 'review', 'anonymous'
         }
-        field_order = ['book', 'user', 'rating', 'review']
+        field_order = ['book', 'user', 'rating', 'review', 'anonymous']
 
 
 class WishForm(forms.ModelForm):

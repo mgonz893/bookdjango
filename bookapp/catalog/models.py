@@ -16,6 +16,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, default='')
     password = models.CharField(max_length=8, default='')
+    nickname = models.CharField(max_length=10, default='')
     email = models.EmailField(max_length=50, default='')
     address = models.CharField(max_length=200, default='')
     city = models.CharField(max_length=25, default='')
@@ -147,6 +148,11 @@ class Book(models.Model):
             'slug': self.slug
         })
 
+    def get_transfer_wishlist_url(self):
+        return reverse('transfer-wishlist', kwargs={
+            'slug': self.slug
+        })
+
 
 class OrderBook(models.Model):
     user = models.ForeignKey(
@@ -208,7 +214,7 @@ class BookRating(models.Model):
     user = models.ForeignKey('UserProfile', on_delete=models.CASCADE)
     review = models.TextField(max_length=1000)
     rating = models.SmallIntegerField(choices=[(i, i) for i in range(1, 6)])
-
+    anonymous = models.BooleanField("Post as anonymous", default=False)
     def __str__(self):
         return f'{self.user} - {self.book} - {self.rating}'
 
