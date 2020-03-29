@@ -26,9 +26,9 @@ function CheckSort(val){
   <p></p>
 
   {% if book_list %}
-  <table>
+  <table style="width: 90%">
     {% for book in book_list %}
-      <td colspan = "3">
+      <td>
         <a href="{{ book.get_absolute_url }}">{{ book.title }}</a> ({{book.author}}) <strong>${{book.price}}</strong>
         <p><strong>Average Rating:</strong>{{ book.average_rating }}</p>
         <p><img src={{book.model_pic.url}} style="width: 100px; height: 100px" /></p>
