@@ -16,6 +16,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=200, default='')
     password = models.CharField(max_length=8, default='')
+    nickname = models.CharField(max_length=10, default='')
     email = models.EmailField(max_length=50, default='')
     address = models.CharField(max_length=200, default='')
     city = models.CharField(max_length=25, default='')
