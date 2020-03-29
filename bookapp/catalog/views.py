@@ -288,8 +288,9 @@ def editshippingaddress(request, pk):
     return render(request, 'addshippingaddr.html', args)
 
 def editcreditcard(request, pk):
+
     card = CreditCard.objects.get(id=pk)
-    form = CreditCardForm(request.POST, instance=card)
+    form = CreditCardForm(instance=card)
 
     if request.method == 'POST':
         form = CreditCardForm(request.POST, instance=card)
@@ -299,7 +300,7 @@ def editcreditcard(request, pk):
     args = {
         'form': form
     }
-    return render(request, 'addcreditcard.html')    
+    return render(request, 'addcreditcard.html', args)    
 
 
 def deleteshippingaddress(request, pk):
