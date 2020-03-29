@@ -287,21 +287,6 @@ def editshippingaddress(request, pk):
     }
     return render(request, 'addshippingaddr.html', args)
 
-def editcreditcard(request, pk):
-
-    card = CreditCard.objects.get(id=pk)
-    form = CreditCardForm(instance=card)
-
-    if request.method == 'POST':
-        form = CreditCardForm(request.POST, instance=card)
-        if form.is_valid():
-            form.save()
-            return redirect('/catalog/creditcards')
-    args = {
-        'form': form
-    }
-    return render(request, 'addcreditcard.html', args)    
-
 
 def deleteshippingaddress(request, pk):
     address = ShippingAddr.objects.get(id=pk)
@@ -311,6 +296,15 @@ def deleteshippingaddress(request, pk):
 
     args = {'item': address}
     return render(request, 'deleteshippingaddr.html', args)
+
+def deletecreditcard(request, pk):
+    card = CreditCard.objects.get(id=pk)
+    if request.method == 'POST':
+        card.delete()
+        return redirect('/catalog/creditcards')    
+    
+    args = { 'item': card}
+    return render(request, 'deletecreditcard.html', args)
 
 
 def setdefaultaddress(request, pk):
@@ -358,6 +352,21 @@ def addcreditcard(request):
             'username': request.user.userprofile
         }
     return render(request, 'addcreditcard.html', args)
+
+def editcreditcard(request, pk):
+
+    card = CreditCard.objects.get(id=pk)
+    form = CreditCardForm(instance=card)
+
+    if request.method == 'POST':
+        form = CreditCardForm(request.POST, instance=card)
+        if form.is_valid():
+            form.save()
+            return redirect('/catalog/creditcards')
+    args = {
+        'form': form
+    }
+    return render(request, 'addcreditcard.html', args)    
 
 
 def add_to_cart(request, slug):

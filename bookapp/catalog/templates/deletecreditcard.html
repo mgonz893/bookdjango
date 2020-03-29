@@ -1,0 +1,18 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+  <h2>Delete Saved Credit Card</h2>
+
+  <p> Are you sure you want to delete "{{item}}"?</p>
+
+<form action = "{% url 'deletecreditcard' item.id %}" method ="post">
+
+    {% csrf_token %}
+    <a href = "{% url 'creditcards' %}"><button type = "button"> Cancel </button></a>
+
+    <input type = "submit" name="Confirm">
+
+</form>
+
+{% endblock %}
+
