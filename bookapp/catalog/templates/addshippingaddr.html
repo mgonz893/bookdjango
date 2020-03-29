@@ -1,7 +1,7 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-  <h2>Add New Shipping Information</h2>
+  <h2>Shipping Information</h2>
 <form method ="post">
  {% csrf_token %}
  {{form.as_p}}
