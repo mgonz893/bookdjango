@@ -119,7 +119,7 @@ class SavedForLater(generic.ListView):
 
 class BookListView(generic.ListView):
     model = Book
-    paginate_by = 10
+    paginate_by = (10)
 
     class Meta:
         ordering = ['genre']

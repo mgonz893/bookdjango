@@ -46,23 +46,30 @@
           {% endif %}
         </ul>
      {% endblock %}
+     
      {% block pagination %}
-    {% if is_paginated %}
-        <div class="pagination">
-            <span class="page-links">
-                {% if page_obj.has_previous %}
-                    <a href="{{ request.path }}?sort_by={{ sort_by }}&page={{ page_obj.previous_page_number }}">previous</a>
-                {% endif %}
-                <span class="page-current">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-                </span>
-                {% if page_obj.has_next %}
-                    <a href="{{ request.path }}?sort_by={{ sort_by }}&page={{ page_obj.next_page_number }}">next</a>
-                {% endif %}
-            </span>
-        </div>
+     {% load test %}
+      {% if is_paginated %}
+      <div class="pagination">
+    {% if page_obj.has_previous %}
+      <a href="?{% param_replace page=1 %}">First</a>
+      {% if page_obj.previous_page_number != 1 %}
+        <a href="?{% param_replace page=page_obj.previous_page_number %}">Previous</a>
+      {% endif %}
     {% endif %}
-  {% endblock %} 
+
+    Page {{ page_obj.number }} of {{ paginator.num_pages }}
+
+    {% if page_obj.has_next %}
+      {% if page_obj.next_page_number != paginator.num_pages %}
+        <a href="?{% param_replace page=page_obj.next_page_number %}">Next</a>
+      {% endif %}
+      <a href="?{% param_replace page=paginator.num_pages %}">Last</a>
+    {% endif %}
+              </span>
+          </div>
+      {% endif %}
+    {% endblock %} 
       </div>
       <div class="col-sm-10" id="col-sm-10">{% block content %}{% endblock %}</div>
     </div>
