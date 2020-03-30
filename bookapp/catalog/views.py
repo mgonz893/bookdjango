@@ -89,7 +89,8 @@ class SearchResultsView(generic.ListView):
         object_list = Book.objects.filter(
             Q(title__icontains=query) | Q(genre__name__icontains=query)
         )
-        return object_list.order_by('genre')
+        new_context = object_list.order_by('genre')
+        return new_context
 
 
 class WishlistsView(generic.ListView):
