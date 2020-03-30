@@ -36,7 +36,11 @@
   {% endif %}
   <p><strong>Submitted Comments & Rating: </strong></p>
   {% for ratings in rating %}
+  {% if ratings.anonymous == True %}
+  <li>Anonymous: {{ratings.review}} <p>Rating: {{ratings.rating}} stars</p></li>
+  {% else %}
   <li>{{ratings.user}}: {{ratings.review}} <p>Rating: {{ratings.rating}} stars</p></li>
+  {% endif %}
   {% endfor %}
   {% if user.is_authenticated %}
   <a href="{{book.get_add_to_cart_url}}"> <button type="button">Add to Cart</button> </a>
