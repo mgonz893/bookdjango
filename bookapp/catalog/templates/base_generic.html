@@ -29,20 +29,20 @@
     <div class="row">
       <div class="col-sm-2">
       {% block sidebar %}
-        <ul class="sidebar-nav">
-          <li><a href="{% url 'index' %}">Home</a></li>
-          <li><a href="{% url 'search' %}">Search By Genre</a></li>
-          <li><a href="{% url 'topsellers' %}">Top Sellers</a></li>
-          <li><a href="{% url 'books' %}">All Books</a></li>
+        <ul>
+          <li><a href="{% url 'index' %}" class="liststyle">Home</a></li>
+          <li><a href="{% url 'search' %}" class="liststyle">Search By Genre</a></li>
+          <li><a href="{% url 'topsellers' %}" class="liststyle">Top Sellers</a></li>
+          <li><a href="{% url 'books' %}" class="liststyle">All Books</a></li>
           {% if user.is_authenticated %}
-          <li><a href="{% url 'shoppingcart' %}">Shopping Cart</a></li>      
-          <li>User: {{ user.get_username }}</li>
-          <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
-          <p><li style="font-size: 12px"><a href="{% url 'profile'%}">View Profile</a>
-          <li style="font-size: 12px"><a href="{% url 'wishlists'%}">View Wishlists</a></p>
+          <li><a href="{% url 'shoppingcart' %}" class="liststyle">Shopping Cart</a></li>      
+          <li><a class="liststyle">User: {{ user.get_username }}</a></li>
+          <li><a href="{% url 'logout'%}?next={{request.path}}" class="liststyle">Logout</a></li>
+          <li><a href="{% url 'profile'%}" class="liststyle">View Profile</a>
+          <li><a href="{% url 'wishlists'%}" class="liststyle">View Wishlists</a>
           {% else %}
-            <li><a href="{% url 'login'%}">Login</a></li>   
-            <li><a href ="{% url 'signup' %}">Register</a></li> 
+            <li><a href="{% url 'login'%}" class="liststyle">Login</a></li>   
+            <li><a href ="{% url 'signup' %}" class="liststyle">Register</a></li> 
           {% endif %}
         </ul>
      {% endblock %}
