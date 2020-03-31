@@ -3,14 +3,14 @@
 {% block content %}
   <h2>Top Sellers</h2>
   {% if book_list %}
-  <ul>
+  <ol>
     {% for book in book_list %}
       <li>
         <a href="{{ book.get_absolute_url }}">{{ book.title }}</a> ({{book.author}}) <strong>${{book.price}}</strong>
         <p><img src={{book.model_pic.url}} style="width: 100px; height: 100px" /></p>
       </li>
     {% endfor %}
-  </ul>
+  </ol>
   {% else %}
     <p><strong>There are no books with that genre in this catalog.</strong></p>
   {% endif %}     
