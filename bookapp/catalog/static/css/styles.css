@@ -32,6 +32,20 @@
   cursor: pointer;
 }
 
+.button3 {
+  background-color: red;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
 ul {
   list-style-type: none;
   margin: 0;
@@ -51,8 +65,4 @@ li a.liststyle {
   padding: 8px 12px;
   text-decoration: none;
   border-bottom: 1px solid #555;
-}
-
-body {
-  background-color: white;
 }

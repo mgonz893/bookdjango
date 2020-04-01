@@ -4,11 +4,11 @@
 {% if user.is_authenticated %}
     <h1>Your Wishlists</h1>
     {% for wishlist in wishlists %}
-    <h4>{{ wishlist.name }}</h4> <form action="{% url 'delete-wishlist' %}" method="post">{% csrf_token %} <button type="submit" name="del" value="{{wishlist.id}}">Delete list</button></form>
-    <ul>
+    <h4>{{ wishlist.name }}</h4> <form action="{% url 'delete-wishlist' %}" method="post">{% csrf_token %} <button type="submit" name="del" value="{{wishlist.id}}" class="button2">Delete list</button></form>
+    <ol>
     {% for book in wishlist.books.all %}
-    <li>{{ book.title }} <a href="{{book.get_add_to_cart_url}}"> <button type="button">Add to Cart</button> </a>
-    <a href="{{book.get_remove_from_wishlist_url}}"> <button type="button">Remove from Wishlist</button> </a>
+    <li>{{ book.title }} <a href="{{book.get_add_to_cart_url}}"> <button type="button" class="button2">Add to Cart</button> </a>
+    <a href="{{book.get_remove_from_wishlist_url}}"> <button type="button" class="button2">Remove from Wishlist</button> </a>
 
         <form action="{{book.get_transfer_wishlist_url}}" method="post">
             {% csrf_token %}
@@ -19,12 +19,12 @@
                 {% endfor %}
             </select>
             <input type="hidden" name="cwish" value="{{wishlist.id}}">
-            <button type="submit">Move</button>
+            <button type="submit" class="button2">Move</button>
         </form>
 
     </li>
     {% endfor %}
-    </ul>
+    </ol>
     {% endfor %}
 
     <a href="newwish/">Add New Wishlist</a>

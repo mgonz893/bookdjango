@@ -3,14 +3,14 @@
 {% block content %}
   <h2>Credit Cards</h2>
     {% for card in cards %}
-    <ul>
+    <ol>
   <li>
     <strong>Card Number: </strong>{{card.ccnumber}} <p></p>
     <p><strong>CVV: </strong>{{card.ccv}} </p>  
      <p><strong>Expiration date: </strong>{{card.expiration|date:"M/Y"}} </p>  
      <p><a href= {% url 'editcreditcard' card.id %}>Edit</a> <strong> | </strong> <a href= {% url 'deletecreditcard' card.id %}>Delete</a> <strong> | </strong> <a href="">Set as default</a></p>
   </li>  
-  </ul>
+  </ol>
   {% endfor %}  
-  <p><a href= {% url 'addcreditcard' %}><strong><button type="button">Add New Card</button> </strong></a><p></p
+  <p><a href= {% url 'addcreditcard' %}><strong><button type="button" class="button2">Add New Card</button> </strong></a><p></p
 {% endblock %}

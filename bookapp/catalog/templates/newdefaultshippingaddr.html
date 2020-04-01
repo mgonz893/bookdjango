@@ -8,7 +8,7 @@
 <form action = "{% url 'setdefaultaddr' item.id %}" method ="post">
 
     {% csrf_token %}
-    <a href = "{% url 'shipaddr' %}"><button type = "button"> Cancel </button></a>
+    <a href = "{% url 'shipaddr' %}"><button type = "button" class="button2"> Cancel </button></a>
 
     <input type = "submit" name="Confirm">
 

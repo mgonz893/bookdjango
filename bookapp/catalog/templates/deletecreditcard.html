@@ -8,7 +8,7 @@
 <form action = "{% url 'deletecreditcard' item.id %}" method ="post">
 
     {% csrf_token %}
-    <a href = "{% url 'creditcards' %}"><button type = "button"> Cancel </button></a>
+    <a href = "{% url 'creditcards' %}"><button type = "button" class="button2"> Cancel </button></a>
 
     <input type = "submit" name="Confirm">
 
