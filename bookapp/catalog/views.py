@@ -627,3 +627,67 @@ def add_save_for_later(request, slug):
         save.items.add(save_book)
         messages.info(request, "This book was saved for later.")
         return redirect("book-detail", slug=slug)
+
+def move_to_cart(request, slug):
+    book = get_object_or_404(Book, slug=slug)
+    order_book, created = OrderBook.objects.get_or_create(
+        book=book,
+        user=request.user)
+    order_qs = Order.objects.filter(user=request.user)
+    if order_qs.exists():
+        order = order_qs[0]
+        if order.items.filter(book__slug=book.slug).exists():
+            order_book.quantity += 1
+            order_book.save()
+            messages.info(request, "This book quantity was moved to the shopping cart.")
+            return redirect("book-detail", slug=slug)
+        else:
+            order.items.add(order_book)
+            save_qs = Save.objects.filter(user=request.user)
+            if save_qs.exists():
+                save = save_qs[0]
+                if save.items.filter(book__slug=book.slug).exists():
+                    save_book = SaveBook.objects.filter(
+                        book=book,
+                        user=request.user
+                    )[0]
+                    if save_book.quantity > 1:
+                        save_book.delete()
+                    else:
+                        save_book.delete()
+                        messages.info(
+                            request, "This book was moved to the shopping cart.")
+            return redirect("book-detail", slug=slug)
+    else:
+        ordered_date = timezone.now()
+        order = Order.objects.create(
+            user=request.user, saved_date=saved_date)
+        order.items.add(order_book)
+        messages.info(request, "This book was moved to the shopping cart.")
+        return redirect("book-detail", slug=slug)
+
+def remove_saved_list(request, slug):
+    book = get_object_or_404(Book, slug=slug)
+    save_qs = Save.objects.filter(user=request.user)
+    if save_qs.exists():
+        save = save_qs[0]
+        if save.items.filter(book__slug=book.slug).exists():
+            save_book = SaveBook.objects.filter(
+                book=book,
+                user=request.user
+            )[0]
+            if save_book.quantity > 1:
+                save_book.delete()
+            else:
+                save_book.delete()
+            messages.info(request, "This book was removed from saved for later.")
+            return redirect("book-detail", slug=slug)
+        else:
+            messages.info(request, "This book was not saved for later.")
+            return redirect("book-detail", slug=slug)
+
+    else:
+        messages.info(request, "This book was not saved for later.")
+        return redirect("book-detail", slug=slug)
+
+

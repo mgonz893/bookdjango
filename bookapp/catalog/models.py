@@ -153,6 +153,16 @@ class Book(models.Model):
             'slug': self.slug
         })
 
+    def get_move_to_cart_url(self):
+        return reverse('move-to-cart', kwargs={
+            'slug': self.slug
+        })
+
+    def remove_saved_list(self):
+        return reverse('remove-saved-list', kwargs={
+            'slug': self.slug
+        })
+
 
 class OrderBook(models.Model):
     user = models.ForeignKey(

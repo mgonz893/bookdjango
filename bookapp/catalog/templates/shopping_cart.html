@@ -37,6 +37,7 @@
         <p><img src={{savebook.book.model_pic.url}} style="width: 100px; height: 100px" /></p>
         <p>Quantity: {{savebook.quantity}}</p>
         <p>Price: ${{ savebook.quantity | multiply:savebook.book.price }}</p>
+        <a href="{{savebook.book.get_move_to_cart_url}}" onclick="{{savebook.book.get_remove_saved_list_url}}"> <button type="button" class="button2">Move to Cart</button> </a>
       </li>
     {% endfor %}
 

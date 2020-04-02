@@ -52,4 +52,6 @@ urlpatterns = [
     path('transfer-wishlist/<slug>',
          views.transfer_wishlist, name='transfer-wishlist'),
     path('delete-wishlist', views.delete_wishlist, name='delete-wishlist'),
+    path('move-to-cart/<slug>', views.move_to_cart, name='move-to-cart'),
+    path('remove-saved-list/<slug>', views.remove_saved_list, name='remove-saved-list'),
 ]
