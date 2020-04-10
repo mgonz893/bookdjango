@@ -18,7 +18,10 @@ class RegistrationForm(UserCreationForm):
                   'password1',
                   'password2'
                   )
-
+    def __init__(self, *args, **kwargs):
+        super(RegistrationForm, self).__init__(*args, **kwargs)
+        self.fields['password1'].help_text = 'Password must contain at least 8 characters. Cannot be entirely numeric.'
+        
 
 def save(self, commit=True):
     user = super(RegistrationForm, self).save(commit=False)
