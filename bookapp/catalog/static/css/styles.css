@@ -46,12 +46,12 @@
 	cursor: pointer;
 }
 
-.button4 {
-	background-color: pink;
+.rbutton {
+	background-color: red;
 	border: none;
 	border-radius: 8px;
 	color: white;
-	padding: 8px 16px;
+	padding: 8px 8px;
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
