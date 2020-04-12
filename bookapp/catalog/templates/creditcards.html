@@ -4,12 +4,11 @@
   <h2>Credit Cards</h2>
     {% for card in cards %}
     <ol>
-  <li>
+   {{forloop.counter}}. 
     <strong>Card Number: </strong>{{card.ccnumber}} <p></p>
     <p><strong>CVV: </strong>{{card.ccv}} </p>  
      <p><strong>Expiration date: </strong>{{card.expiration|date:"M/Y"}} </p>  
-     <p><a href= {% url 'editcreditcard' card.id %}>Edit</a> <strong> | </strong> <a href= {% url 'deletecreditcard' card.id %}>Delete</a></p>
-  </li>  
+     <p><a href= {% url 'editcreditcard' card.id %}>Edit</a> <strong> | </strong> <a href= {% url 'deletecreditcard' card.id %}>Delete</a></p>  
   </ol>
   {% endfor %}  
   <p><a href= {% url 'addcreditcard' %}><strong><button type="button" class="button2">Add New Card</button> </strong></a><p></p
