@@ -4,7 +4,13 @@
   <h2>Credit Card Information</h2>
 <form method ="post">
  {% csrf_token %}
- {{form.as_p}}
+ {% for field in form %}
+ <p>
+    {{field.label_tag}} {{field}} 
+    {{field.help_text}} 
+    <p><font color = "red">{{field.errors | striptags}}</font></p>
+  </p>
+  {% endfor %}
  <button type="submit" name"Submit" method="POST" class="button2">Save</button>
 </form>
 {% endblock %}

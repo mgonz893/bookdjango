@@ -18,10 +18,11 @@ class RegistrationForm(UserCreationForm):
                   'password1',
                   'password2'
                   )
+
     def __init__(self, *args, **kwargs):
         super(RegistrationForm, self).__init__(*args, **kwargs)
         self.fields['password1'].help_text = 'Password must contain at least 8 characters. Cannot be entirely numeric.'
-        
+
 
 def save(self, commit=True):
     user = super(RegistrationForm, self).save(commit=False)
@@ -37,11 +38,11 @@ class EditProfileForm(UserChangeForm):
 
     class Meta:
         model = User
-        fields = {
+        fields = [
             'email',
             'first_name',
             'last_name',
-        }
+        ]
         exclude = {
             'password',
         }
@@ -51,29 +52,29 @@ class EditProfileForm(UserChangeForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = {
+        fields = [
             'nickname',
             'address',
             'city',
             'state',
             'zipcode',
-        }
+        ]
         exclude = {
             'password',
         }
 
-        field_order = ['nickname','address', 'city', 'state', 'zipcode']
+        field_order = ['nickname', 'address', 'city', 'state', 'zipcode']
 
 
 class ShippingAddressForm(forms.ModelForm):
     class Meta:
         model = ShippingAddr
-        fields = {
+        fields = [
             'address',
             'city',
             'state',
             'zipcode',
-        }
+        ]
         exclude = {
             'username',
         }
@@ -83,11 +84,11 @@ class ShippingAddressForm(forms.ModelForm):
 class CreditCardForm(forms.ModelForm):
     class Meta:
         model = CreditCard
-        fields = {
+        fields = [
             'ccnumber',
             'ccv',
             'expiration',
-        }
+        ]
         exclude = {
             'username',
         }
@@ -104,9 +105,10 @@ class ReviewForm(forms.ModelForm):
         model = BookRating
         widgets = {'book': forms.HiddenInput(), 'user': forms.HiddenInput()}
         fields = {
-            'book', 'user', 'rating', 'review', 'anonymous'
+            'book', 'user', 'rating', 'review', 'anonymous', 'nickname'
         }
-        field_order = ['book', 'user', 'rating', 'review', 'anonymous']
+        field_order = ['book', 'user', 'rating',
+                       'review', 'anonymous', 'nickname']
 
 
 class WishForm(forms.ModelForm):
