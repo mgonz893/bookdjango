@@ -5,6 +5,7 @@
     <h1>Your Wishlists</h1>
     {% for wishlist in wishlists %}
     <ol>
+    <h2>{{ wishlist.name }}</h2>
     {% for book in wishlist.books.all %}
     <li>{{ book.title }} <a href="{{book.get_add_to_cart_url}}"> <button type="button" class="button2">Add to Cart</button> </a>
     <a href="{{book.get_remove_from_wishlist_url}}"> <button type="button" class="button2">Remove from Wishlist</button> </a>
@@ -18,14 +19,15 @@
                 {% endfor %}
             </select>
             <input type="hidden" name="cwish" value="{{wishlist.id}}">
-            <button type="submit" class="button2">Move</button>
+            <button type="submit" class="button2">Move</button>            
         </form>
     </li>
     {% endfor %}
+    <form action="{% url 'delete-wishlist' %}" method="post">{% csrf_token %} <button type="submit" name="del" value="{{wishlist.id}}" class="button3">Delete list</button></form>
     </ol>
     {% endfor %}
 
-    <h4>{{ wishlist.name }}</h4> <form action="{% url 'delete-wishlist' %}" method="post">{% csrf_token %} <button type="submit" name="del" value="{{wishlist.id}}" class="button3">Delete list</button></form>
+    
 
     <a href="newwish/">Add New Wishlist</a>
 

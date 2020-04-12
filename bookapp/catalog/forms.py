@@ -18,10 +18,11 @@ class RegistrationForm(UserCreationForm):
                   'password1',
                   'password2'
                   )
+
     def __init__(self, *args, **kwargs):
         super(RegistrationForm, self).__init__(*args, **kwargs)
         self.fields['password1'].help_text = 'Password must contain at least 8 characters. Cannot be entirely numeric.'
-        
+
 
 def save(self, commit=True):
     user = super(RegistrationForm, self).save(commit=False)
@@ -62,7 +63,7 @@ class ProfileForm(forms.ModelForm):
             'password',
         }
 
-        field_order = ['nickname','address', 'city', 'state', 'zipcode']
+        field_order = ['nickname', 'address', 'city', 'state', 'zipcode']
 
 
 class ShippingAddressForm(forms.ModelForm):
@@ -104,9 +105,10 @@ class ReviewForm(forms.ModelForm):
         model = BookRating
         widgets = {'book': forms.HiddenInput(), 'user': forms.HiddenInput()}
         fields = {
-            'book', 'user', 'rating', 'review', 'anonymous' 'nickname'
+            'book', 'user', 'rating', 'review', 'anonymous', 'nickname'
         }
-        field_order = ['book', 'user', 'rating', 'review', 'anonymous' 'nickname']
+        field_order = ['book', 'user', 'rating',
+                       'review', 'anonymous', 'nickname']
 
 
 class WishForm(forms.ModelForm):
