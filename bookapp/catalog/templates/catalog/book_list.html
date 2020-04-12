@@ -24,7 +24,7 @@ function CheckSort(val){
   <input type="submit" value="Submit" class="button2"/>
   </form>
   <p></p>
-
+  Limit Results to: <a href="{% url 'books' %}" class="liststyle">10</a> <a href="{% url 'books20' %}" class="liststyle">20</a>
   {% if book_list %}
   <table style="width: 90%">
     {% for book in book_list %}
