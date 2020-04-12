@@ -104,9 +104,9 @@ class ReviewForm(forms.ModelForm):
         model = BookRating
         widgets = {'book': forms.HiddenInput(), 'user': forms.HiddenInput()}
         fields = {
-            'book', 'user', 'rating', 'review', 'anonymous'
+            'book', 'user', 'rating', 'review', 'anonymous' 'nickname'
         }
-        field_order = ['book', 'user', 'rating', 'review', 'anonymous']
+        field_order = ['book', 'user', 'rating', 'review', 'anonymous' 'nickname']
 
 
 class WishForm(forms.ModelForm):
