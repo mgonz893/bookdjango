@@ -5,11 +5,12 @@ from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import User
-from datetime import date
+from datetime import date, datetime
 from django.db.models.signals import post_save
 from django.conf import settings
 from django.db.models import Avg
 # Create your models here.
+
 
 
 class UserProfile(models.Model):
@@ -40,12 +41,11 @@ post_save.connect(create_profile, sender=User)
 class CreditCard(models.Model):
     username = models.ForeignKey(
         'UserProfile', on_delete=models.SET_NULL, null=True)
-    ccnumber = models.PositiveIntegerField(default=0, validators=[
-                                           MaxValueValidator(9999999999999999)])  # 16 digits for valid CC number
-    ccv = models.PositiveIntegerField(
-        default=0, validators=[MaxValueValidator(999)])
+    ccnumber = models.PositiveIntegerField(validators=[
+                                           MaxValueValidator(9999999999999999)], blank = False)  # 16 digits for valid CC number
+    ccv = models.PositiveIntegerField(validators=[MaxValueValidator(999)], blank = False)
     expiration = models.DateField(
-        help_text="(YYYY-MM-DD)", null=True, auto_now_add=False, auto_now=False, blank=True)
+        help_text="(YYYY-MM-DD)", auto_now_add=False, auto_now=False, blank = False, validators=[MinValueValidator(limit_value=date.today)])
 
     def __str__(self):
         return f'{self.username} - {self.ccnumber}'

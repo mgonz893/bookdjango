@@ -265,11 +265,10 @@ def addshippingaddress(request):
             return redirect('/catalog/shipaddr')
     else:
         form = ShippingAddressForm()
-        args = {
+    args = {
             'form': form,
             'username': request.user.userprofile
-        }
-
+            }
     return render(request, 'addshippingaddr.html', args)
 
 
@@ -347,12 +346,15 @@ def addcreditcard(request):
             newcard.username = request.user.userprofile
             newcard.save()
             return redirect('/catalog/creditcards')
+
     else:
         form = CreditCardForm()
-        args = {
+
+    args = {
             'form': form,
             'username': request.user.userprofile
-        }
+            }
+
     return render(request, 'addcreditcard.html', args)
 
 

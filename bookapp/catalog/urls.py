@@ -35,7 +35,7 @@ urlpatterns = [
     path('creditcards/addcreditcard/', views.addcreditcard, name='addcreditcard'),
     path('creditcards/editcreditcard/<str:pk>/',
          views.editcreditcard, name='editcreditcard'),
-     path('creditcards/deletecreditcard/<str:pk>/',
+    path('creditcards/deletecreditcard/<str:pk>/',
          views.deletecreditcard, name='deletecreditcard'),
     path('remove-from-cart/<slug>',
          views.remove_from_cart, name='remove-from-cart'),
