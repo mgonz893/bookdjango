@@ -57,9 +57,9 @@ font-family: 'Rakkas'
           {% if is_paginated %}
           <div class="pagination">
           {% if page_obj.has_previous %}
-          <a href="?{% param_replace page=1 %}">First</a>
+          <li><a href="?{% param_replace page=1 %}">First</a> </li>
           {% if page_obj.previous_page_number != 1 %}
-          <a href="?{% param_replace page=page_obj.previous_page_number %}">Previous</a>
+          <li><a href="?{% param_replace page=page_obj.previous_page_number %}">Previous</a></li>
           {% endif %}
           {% endif %}
           Page {{ page_obj.number }} of {{ paginator.num_pages }}
