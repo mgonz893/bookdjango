@@ -136,24 +136,6 @@ class BookListView(generic.ListView):
         return context
 
 
-class BookListView2(generic.ListView):
-    model = Book
-    paginate_by = (20)
-
-    class Meta:
-        ordering = ['genre']
-
-    def get_queryset(self):
-        order = self.request.GET.get('orderby', 'genre')
-        new_context = Book.objects.filter().order_by(order)
-        return new_context
-
-    def get_context_data(self, **kwargs):
-        context = super(BookListView2, self).get_context_data(**kwargs)
-        context['orderby'] = self.request.GET.get('orderby')
-        return context
-
-
 class BookDetailView(generic.DetailView):
     model = Book
     queryset = Book.objects.all()
@@ -284,9 +266,9 @@ def addshippingaddress(request):
     else:
         form = ShippingAddressForm()
     args = {
-        'form': form,
-        'username': request.user.userprofile
-    }
+            'form': form,
+            'username': request.user.userprofile
+            }
     return render(request, 'addshippingaddr.html', args)
 
 
@@ -369,9 +351,9 @@ def addcreditcard(request):
         form = CreditCardForm()
 
     args = {
-        'form': form,
-        'username': request.user.userprofile
-    }
+            'form': form,
+            'username': request.user.userprofile
+            }
 
     return render(request, 'addcreditcard.html', args)
 
@@ -648,7 +630,6 @@ def add_save_for_later(request, slug):
         messages.info(request, "This book was saved for later.")
         return redirect("book-detail", slug=slug)
 
-
 def move_to_cart(request, slug):
     book = get_object_or_404(Book, slug=slug)
     order_book, created = OrderBook.objects.get_or_create(
@@ -660,8 +641,7 @@ def move_to_cart(request, slug):
         if order.items.filter(book__slug=book.slug).exists():
             order_book.quantity += 1
             order_book.save()
-            messages.info(
-                request, "This book quantity was moved to the shopping cart.")
+            messages.info(request, "This book quantity was moved to the shopping cart.")
             return redirect("book-detail", slug=slug)
         else:
             order.items.add(order_book)
@@ -688,7 +668,6 @@ def move_to_cart(request, slug):
         messages.info(request, "This book was moved to the shopping cart.")
         return redirect("book-detail", slug=slug)
 
-
 def remove_saved_list(request, slug):
     book = get_object_or_404(Book, slug=slug)
     save_qs = Save.objects.filter(user=request.user)
@@ -703,8 +682,7 @@ def remove_saved_list(request, slug):
                 save_book.delete()
             else:
                 save_book.delete()
-            messages.info(
-                request, "This book was removed from saved for later.")
+            messages.info(request, "This book was removed from saved for later.")
             return redirect("book-detail", slug=slug)
         else:
             messages.info(request, "This book was not saved for later.")
@@ -713,3 +691,5 @@ def remove_saved_list(request, slug):
     else:
         messages.info(request, "This book was not saved for later.")
         return redirect("book-detail", slug=slug)
+
+
