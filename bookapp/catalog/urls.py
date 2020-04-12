@@ -15,6 +15,7 @@ urlpatterns = [
     path('profile/edit', views.editprofile, name='editprofile'),
     path('signup/', views.signup, name='signup'),
     path('books/', views.BookListView.as_view(), name='books'),
+    path('booksTwenty/', views.BookListViewTwenty.as_view(), name='booksTwenty'),
     path('book/<int:pk>', views.BookDetailView.as_view(),
          name='book-detail'),  # may need to change back to slug
     path('book/<slug>', views.BookDetailView.as_view(),
@@ -53,5 +54,6 @@ urlpatterns = [
          views.transfer_wishlist, name='transfer-wishlist'),
     path('delete-wishlist', views.delete_wishlist, name='delete-wishlist'),
     path('move-to-cart/<slug>', views.move_to_cart, name='move-to-cart'),
-    path('remove-saved-list/<slug>', views.remove_saved_list, name='remove-saved-list'),
+    path('remove-saved-list/<slug>',
+         views.remove_saved_list, name='remove-saved-list'),
 ]
