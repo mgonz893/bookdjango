@@ -37,11 +37,11 @@ class EditProfileForm(UserChangeForm):
 
     class Meta:
         model = User
-        fields = {
+        fields = [
             'email',
             'first_name',
             'last_name',
-        }
+        ]
         exclude = {
             'password',
         }
@@ -51,13 +51,13 @@ class EditProfileForm(UserChangeForm):
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = {
+        fields = [
             'nickname',
             'address',
             'city',
             'state',
             'zipcode',
-        }
+        ]
         exclude = {
             'password',
         }
@@ -68,12 +68,12 @@ class ProfileForm(forms.ModelForm):
 class ShippingAddressForm(forms.ModelForm):
     class Meta:
         model = ShippingAddr
-        fields = {
+        fields = [
             'address',
             'city',
             'state',
             'zipcode',
-        }
+        ]
         exclude = {
             'username',
         }
@@ -83,11 +83,11 @@ class ShippingAddressForm(forms.ModelForm):
 class CreditCardForm(forms.ModelForm):
     class Meta:
         model = CreditCard
-        fields = {
+        fields = [
             'ccnumber',
             'ccv',
             'expiration',
-        }
+        ]
         exclude = {
             'username',
         }
