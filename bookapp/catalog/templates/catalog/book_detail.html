@@ -38,6 +38,8 @@
   {% for ratings in rating %}
   {% if ratings.anonymous == True %}
   <li>Anonymous: {{ratings.review}} <p>Rating: {{ratings.rating}} stars</p></li>
+  {% elif ratings.nickname == True %}
+  <li>{{ratings.user.nickname}}: {{ratings.review}} <p>Rating: {{ratings.rating}} stars</p></li>
   {% else %}
   <li>{{ratings.user}}: {{ratings.review}} <p>Rating: {{ratings.rating}} stars</p></li>
   {% endif %}
